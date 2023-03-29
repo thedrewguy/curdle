@@ -23,6 +23,13 @@ const colorPrint = {
   [colors.white]: chalk.whiteBright,
 };
 
+const keyboardPrint = {
+  [colors.green]: colorPrint[colors.green],
+  [colors.orange]: colorPrint[colors.orange],
+  [colors.grey]: chalk.rgb(100, 100, 100),
+  [colors.white]: colorPrint[colors.white],
+};
+
 const colorRank = {
   [colors.green]: 4,
   [colors.orange]: 3,
@@ -94,7 +101,7 @@ function printKeyboard() {
     let rowString = '';
     row.forEach(letter => {
       const letterColor = keyboardColoring.get(letter);
-      rowString += colorPrint[letterColor](letter);
+      rowString += keyboardPrint[letterColor](letter);
     });
     console.log(rowString);
   });
