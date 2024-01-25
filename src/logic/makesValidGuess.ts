@@ -1,5 +1,5 @@
-import { Letter } from "../utils/letters";
-import { guessWords } from "../utils/guess-words";
+import { Letter } from "../data/letters";
+import { guessWords } from "../data/guess-words";
 
 export function makesValidWord(letters: Letter[]) {
   return guessWords.includes(letters.join(""));

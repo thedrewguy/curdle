@@ -1,6 +1,6 @@
 import { LetterCard } from "./LetterCard";
 import { Row } from "./Row";
-import { Guessed, letterToCardColorMap } from "./utils/types";
+import { Guessed, letterToCardColorMap } from "./data/types";
 
 export function GuessedRow(props: { guessed: Guessed }) {
   return (

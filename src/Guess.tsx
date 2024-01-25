@@ -1,7 +1,7 @@
 import { LetterCard } from "./LetterCard";
 import { Row } from "./Row";
-import { guessWords } from "./utils/guess-words";
-import { Letter } from "./utils/letters";
+import { guessWords } from "./data/guess-words";
+import { Letter } from "./data/letters";
 
 export function Guess(props: { letters: Letter[] }) {
   return (

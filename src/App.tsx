@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Letter, alphabet } from "./utils/letters";
+import { Letter, alphabet } from "./data/letters";
 import { Guess } from "./Guess";
 import { makesValidWord } from "./logic/makesValidGuess";
-import { Guessed as Guessed } from "./utils/types";
+import { Guessed as Guessed } from "./data/types";
 import { GuessedRow } from "./GuessRow";
 import { Stack, Typography } from "@mui/material";
+import { guessWord } from "./logic/guess-word";
 
 function App() {
   const [guess, guesseds] = useKeyboardListener();
@@ -52,13 +53,6 @@ function useKeyboardListener() {
   useKeyDown(handleKeydown);
 
   return [guess, guesseds] as [typeof guess, typeof guesseds];
-}
-
-function guessWord(guess: Letter[]) {
-  return guess.map((l) => ({
-    letter: l,
-    color: "green",
-  })) as Guessed;
 }
 
 function useKeyDown(handleKeydown: (e: KeyboardEvent) => void) {

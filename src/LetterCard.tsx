@@ -1,6 +1,6 @@
 import { Card, Typography } from "@mui/material";
-import { Letter } from "./utils/letters";
-import { LetterCardColor } from "./utils/types";
+import { Letter } from "./data/letters";
+import { LetterCardColor } from "./data/types";
 
 export function LetterCard(props: {
   letter?: Letter;
