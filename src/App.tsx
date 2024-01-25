@@ -4,6 +4,7 @@ import { ActiveRow } from "./ActiveRow";
 import { makesValidWord } from "./utils/makesValidGuess";
 import { Guess } from "./utils/types";
 import { GuessRow } from "./GuessRow";
+import { Stack } from "@mui/material";
 
 function App() {
   const [guesses, setGuesses] = useState<Guess[]>([
@@ -20,10 +21,12 @@ function App() {
   return (
     <div>
       <h1>Curdle</h1>
-      {guesses.map((guess, index) => (
-        <GuessRow guess={guess} key={index} />
-      ))}
-      <ActiveRow letters={activeRow} />
+      <Stack spacing={1}>
+        {guesses.map((guess, index) => (
+          <GuessRow guess={guess} key={index} />
+        ))}
+        <ActiveRow letters={activeRow} />
+      </Stack>
     </div>
   );
 }
