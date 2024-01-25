@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Letter, alphabet } from "./data/letters";
 import { Guess } from "./Guess";
-import { makesValidWord } from "./logic/makesValidGuess";
+import { makesValidWord } from "./logic/logic";
 import { Guessed as Guessed } from "./data/types";
 import { GuessedRow } from "./GuessRow";
 import { Stack, Typography } from "@mui/material";
@@ -44,7 +44,7 @@ function useKeyboardListener() {
       removeLetter();
     }
     if (e.key === "Enter" && makesValidWord(guess)) {
-      const newGuess = guessWord(guess);
+      const newGuess = guessWord(guess, guesseds);
       addGuessed(newGuess);
       clearGuess();
     }
