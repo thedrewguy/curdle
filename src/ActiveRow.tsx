@@ -1,11 +1,11 @@
 import { Stack } from "@mui/material";
 import { LetterCard } from "./LetterCard";
+import { guessWords } from "./utils/guess-words";
 import { Letter } from "./utils/letters";
-import { makesValidWord } from "./utils/makesValidGuess";
 
 export function ActiveRow(props: { letters: Letter[] }) {
   return (
-    <Stack direction={"row"}>
+    <Stack sx={{ justifyContent: "center" }} direction={"row"}>
       {Array(5)
         .fill(undefined)
         .map((udf, index) => (
@@ -21,8 +21,7 @@ export function ActiveRow(props: { letters: Letter[] }) {
 }
 
 function getFontColor(letters: Letter[]) {
-  if (letters.length < 5) {
-    return "black";
-  }
-  return makesValidWord(letters) ? "black" : "red";
+  return guessWords.find((word) => word.startsWith(letters.join("")))
+    ? "black"
+    : "red";
 }
