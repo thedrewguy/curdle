@@ -3,13 +3,27 @@ import "./App.css";
 import { Letter, alphabet } from "./utils/letters";
 import { ActiveRow } from "./ActiveRow";
 import { makesValidWord } from "./utils/makesValidGuess";
+import { Guess } from "./utils/types";
+import { GuessRow } from "./GuessRow";
 
 function App() {
+  const [guesses, setGuessRows] = useState<Guess[]>([
+    [
+      { letter: "S", color: "green" },
+      { letter: "N", color: "yellow" },
+      { letter: "A", color: "grey" },
+      { letter: "C", color: "green" },
+      { letter: "K", color: "green" },
+    ],
+  ]);
   const activeRow = useActiveRow();
 
   return (
     <div>
       <h1>Curdle</h1>
+      {guesses.map((guess) => (
+        <GuessRow guess={guess} />
+      ))}
       <ActiveRow letters={activeRow} />
     </div>
   );
