@@ -2,6 +2,7 @@ import { Letter } from "./letters";
 
 export type LetterColor = "green" | "yellow" | "grey";
 type GuessedLetter = { letter: Letter; color: LetterColor };
+export type Guess = [Letter, Letter, Letter, Letter, Letter];
 export type Guessed = [
   GuessedLetter,
   GuessedLetter,

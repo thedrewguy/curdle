@@ -1,7 +1,7 @@
 import { Letter } from "../data/letters";
-import { Guessed as Guessed } from "../data/types";
+import { Guess, Guessed as Guessed } from "../data/types";
 
-export function guessWord(guess: Letter[], guesseds: Guessed[]) {
+export function guessWord(guess: Guess, guesseds: Guessed[]) {
   return guess.map((l) => ({
     letter: l,
     color: "green",

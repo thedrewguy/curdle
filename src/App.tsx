@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Letter, alphabet } from "./data/letters";
-import { Guess } from "./Guess";
+import { EntryRow } from "./EntryRow";
 import { makesValidWord } from "./logic/logic";
-import { Guessed as Guessed } from "./data/types";
-import { GuessedRow } from "./GuessRow";
+import { Guess, Guessed as Guessed } from "./data/types";
+import { GuessedRow } from "./GuessedRow";
 import { Stack, Typography } from "@mui/material";
 import { guessWord } from "./logic/guess-word";
 
 function App() {
-  const [guess, guesseds] = useKeyboardListener();
+  const [entry, guesseds] = useGame();
 
   return (
     <div>
@@ -23,7 +23,7 @@ function App() {
         {guesseds.map((guessed, index) => (
           <GuessedRow guessed={guessed} key={index} />
         ))}
-        <Guess letters={guess} />
+        <EntryRow entry={entry} />
       </Stack>
     </div>
   );
@@ -31,8 +31,8 @@ function App() {
 
 export default App;
 
-function useKeyboardListener() {
-  const [guess, addLetter, removeLetter, clearGuess] = useGuess();
+function useGame() {
+  const [entry, addLetter, removeLetter, clearEntry] = useEntry();
   const [guesseds, addGuessed] = useGuesseds();
 
   function handleKeydown(e: KeyboardEvent) {
@@ -43,16 +43,16 @@ function useKeyboardListener() {
     if (e.key === "Backspace") {
       removeLetter();
     }
-    if (e.key === "Enter" && makesValidWord(guess)) {
-      const newGuess = guessWord(guess, guesseds);
-      addGuessed(newGuess);
-      clearGuess();
+    if (e.key === "Enter" && makesValidWord(entry)) {
+      const guessed = guessWord(entry as Guess, guesseds);
+      addGuessed(guessed);
+      clearEntry();
     }
   }
 
   useKeyDown(handleKeydown);
 
-  return [guess, guesseds] as [typeof guess, typeof guesseds];
+  return [entry, guesseds] as [typeof entry, typeof guesseds];
 }
 
 function useKeyDown(handleKeydown: (e: KeyboardEvent) => void) {
@@ -82,24 +82,24 @@ function useGuesseds() {
   return [guesseds, addGuessed] as [typeof guesseds, typeof addGuessed];
 }
 
-function useGuess() {
-  const [guess, setGuess] = useState<Letter[]>([]);
+function useEntry() {
+  const [entry, setEntry] = useState<Letter[]>([]);
   function addLetter(letter: Letter) {
-    if (guess.length < 5) setGuess([...guess, letter]);
+    if (entry.length < 5) setEntry([...entry, letter]);
   }
 
   function removeLetter() {
-    setGuess(guess.slice(0, guess.length - 1));
+    setEntry(entry.slice(0, entry.length - 1));
   }
 
-  function clearGuess() {
-    setGuess([]);
+  function clearEntry() {
+    setEntry([]);
   }
 
-  return [guess, addLetter, removeLetter, clearGuess] as [
-    typeof guess,
+  return [entry, addLetter, removeLetter, clearEntry] as [
+    typeof entry,
     typeof addLetter,
     typeof removeLetter,
-    typeof clearGuess
+    typeof clearEntry
   ];
 }

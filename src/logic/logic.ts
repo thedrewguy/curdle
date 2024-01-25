@@ -1,13 +1,12 @@
 import { Letter } from "../data/letters";
 import { guessWords } from "../data/guess-words";
-import { Guessed } from "../data/types";
+import { Guess, Guessed } from "../data/types";
 
 export function makesValidWord(letters: Letter[]) {
   return guessWords.includes(letters.join(""));
 }
 
-export function fitsGuessed(word: string, guessed: Guessed) {
-  const letters = word.split("");
+export function fitsGuessed(guess: Guess, guessed: Guessed) {
   return false;
 }
 
@@ -18,5 +17,6 @@ const guessed: Guessed = [
   { letter: "E", color: "grey" },
   { letter: "D", color: "grey" },
 ];
-console.log(fitsGuessed("SAUCE", guessed));
-console.log(fitsGuessed("SEEKS", guessed));
+
+console.log(fitsGuessed(["S", "A", "U", "C", "E"], guessed));
+console.log(fitsGuessed(["S", "E", "E", "K", "S"], guessed));
