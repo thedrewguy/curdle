@@ -4,6 +4,7 @@ import { Letter } from "./utils/letters";
 export function LetterCard(props: {
   letter?: Letter;
   color: "lightgreen" | "white";
+  fontColor: string;
 }) {
   return (
     <Card
@@ -13,7 +14,12 @@ export function LetterCard(props: {
         backgroundColor: props.color,
       }}
     >
-      <Typography fontSize="20pt" minWidth={"1.5em"} minHeight={"1.5em"}>
+      <Typography
+        color={props.fontColor}
+        fontSize="20pt"
+        minWidth={"1.5em"}
+        minHeight={"1.5em"}
+      >
         {props.letter}
       </Typography>
     </Card>
