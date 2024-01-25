@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { Letter } from "./utils/letters";
+import { Letter, alphabet } from "./utils/letters";
 import { ActiveRow } from "./ActiveRow";
 
 function App() {
-  const [activeRow, setActiveRow] = useState<(Letter | undefined)[]>(
-    Array(5).fill(undefined)
-  );
-
-  useKeyListener();
+  const activeRow = useActiveRow();
 
   return (
     <div>
@@ -20,11 +16,26 @@ function App() {
 
 export default App;
 
-function handleKeydown(e: KeyboardEvent) {
-  console.log(e.key);
+function useActiveRow() {
+  const [activeRow, setActiveRow] = useState<Letter[]>([]);
+
+  function addLetter(letter: Letter) {
+    setActiveRow([...activeRow, letter]);
+  }
+
+  function handleKeydown(e: KeyboardEvent) {
+    const keyUpper = e.key.toUpperCase();
+    if ((alphabet as any).includes(keyUpper)) {
+      addLetter(keyUpper as Letter);
+    }
+  }
+
+  useKeyDown(handleKeydown);
+
+  return activeRow;
 }
 
-function useKeyListener() {
+function useKeyDown(handleKeydown: (e: KeyboardEvent) => void) {
   useEffect(() => {
     document.addEventListener("keydown", handleKeydown);
     return () => {
