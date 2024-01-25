@@ -1,10 +1,10 @@
-import { Stack } from "@mui/material";
 import { LetterCard } from "./LetterCard";
+import { Row } from "./Row";
 import { Guess } from "./utils/types";
 
 export function GuessRow(props: { guess: Guess }) {
   return (
-    <Stack sx={{ justifyContent: "center" }} direction="row">
+    <Row>
       {props.guess.map((guessLetter, index) => (
         <LetterCard
           letter={guessLetter.letter}
@@ -13,6 +13,6 @@ export function GuessRow(props: { guess: Guess }) {
           key={index}
         />
       ))}
-    </Stack>
+    </Row>
   );
 }

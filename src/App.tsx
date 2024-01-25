@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import { Letter, alphabet } from "./utils/letters";
 import { ActiveRow } from "./ActiveRow";
 import { makesValidWord } from "./utils/makesValidGuess";
@@ -7,7 +6,7 @@ import { Guess } from "./utils/types";
 import { GuessRow } from "./GuessRow";
 
 function App() {
-  const [guesses, setGuessRows] = useState<Guess[]>([
+  const [guesses, setGuesses] = useState<Guess[]>([
     [
       { letter: "S", color: "green" },
       { letter: "N", color: "yellow" },
@@ -21,8 +20,8 @@ function App() {
   return (
     <div>
       <h1>Curdle</h1>
-      {guesses.map((guess) => (
-        <GuessRow guess={guess} />
+      {guesses.map((guess, index) => (
+        <GuessRow guess={guess} key={index} />
       ))}
       <ActiveRow letters={activeRow} />
     </div>

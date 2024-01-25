@@ -16,6 +16,7 @@ export function LetterCard(props: {
     >
       <Typography
         color={props.fontColor}
+        textAlign="center"
         fontSize="20pt"
         minWidth={"1.5em"}
         minHeight={"1.5em"}

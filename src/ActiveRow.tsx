@@ -1,11 +1,11 @@
-import { Stack } from "@mui/material";
 import { LetterCard } from "./LetterCard";
+import { Row } from "./Row";
 import { guessWords } from "./utils/guess-words";
 import { Letter } from "./utils/letters";
 
 export function ActiveRow(props: { letters: Letter[] }) {
   return (
-    <Stack sx={{ justifyContent: "center" }} direction={"row"}>
+    <Row>
       {Array(5)
         .fill(undefined)
         .map((udf, index) => (
@@ -16,7 +16,7 @@ export function ActiveRow(props: { letters: Letter[] }) {
             key={index}
           />
         ))}
-    </Stack>
+    </Row>
   );
 }
 
