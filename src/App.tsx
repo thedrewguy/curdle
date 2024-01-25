@@ -1,34 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import { Stack } from "@mui/material";
-import { LetterCard } from "./LetterCard";
 import { Letter } from "./utils/letters";
+import { ActiveRow } from "./ActiveRow";
 
 function App() {
-  const [activeRow, setActiveRow] = useState<(Letter | undefined)[]>([
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  ]);
+  const [activeRow, setActiveRow] = useState<(Letter | undefined)[]>(
+    Array(5).fill(undefined)
+  );
+
+  useKeyListener();
 
   return (
-    <>
+    <div>
       <h1>Curdle</h1>
       <ActiveRow letters={activeRow} />
-    </>
+    </div>
   );
 }
 
 export default App;
 
-function ActiveRow(props: { letters: (Letter | undefined)[] }) {
-  return (
-    <Stack direction={"row"}>
-      {props.letters.map((letter, index) => (
-        <LetterCard letter={letter} color="white" key={index} />
-      ))}
-    </Stack>
-  );
+function handleKeydown(e: KeyboardEvent) {
+  console.log(e.key);
+}
+
+function useKeyListener() {
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeydown);
+    return () => {
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  });
 }
