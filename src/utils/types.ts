@@ -1,13 +1,13 @@
 import { Letter } from "./letters";
 
 export type LetterColor = "green" | "yellow" | "grey";
-type GuessLetter = { letter: Letter; color: LetterColor };
-export type Guess = [
-  GuessLetter,
-  GuessLetter,
-  GuessLetter,
-  GuessLetter,
-  GuessLetter
+type GuessedLetter = { letter: Letter; color: LetterColor };
+export type Guessed = [
+  GuessedLetter,
+  GuessedLetter,
+  GuessedLetter,
+  GuessedLetter,
+  GuessedLetter
 ];
 
 export type LetterCardColor = "green" | "grey" | "goldenrod" | "white";

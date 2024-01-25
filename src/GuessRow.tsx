@@ -1,11 +1,11 @@
 import { LetterCard } from "./LetterCard";
 import { Row } from "./Row";
-import { Guess, letterToCardColorMap } from "./utils/types";
+import { Guessed, letterToCardColorMap } from "./utils/types";
 
-export function GuessRow(props: { guess: Guess }) {
+export function GuessedRow(props: { guessed: Guessed }) {
   return (
     <Row>
-      {props.guess.map((guessLetter, index) => (
+      {props.guessed.map((guessLetter, index) => (
         <LetterCard
           letter={guessLetter.letter}
           color={letterToCardColorMap[guessLetter.color]}
