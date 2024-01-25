@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Letter, alphabet } from "./utils/letters";
-import { ActiveRow } from "./ActiveRow";
+import { Guess } from "./Guess";
 import { makesValidWord } from "./logic/makesValidGuess";
 import { Guessed as Guessed } from "./utils/types";
 import { GuessedRow } from "./GuessRow";
@@ -22,7 +22,7 @@ function App() {
         {guesseds.map((guessed, index) => (
           <GuessedRow guessed={guessed} key={index} />
         ))}
-        <ActiveRow letters={guess} />
+        <Guess letters={guess} />
       </Stack>
     </div>
   );
@@ -43,10 +43,7 @@ function useKeyboardListener() {
       removeLetter();
     }
     if (e.key === "Enter" && makesValidWord(guess)) {
-      const newGuess = guess.map((l) => ({
-        letter: l,
-        color: "green",
-      })) as Guessed;
+      const newGuess = guessWord(guess);
       addGuessed(newGuess);
       clearGuess();
     }
@@ -55,6 +52,13 @@ function useKeyboardListener() {
   useKeyDown(handleKeydown);
 
   return [guess, guesseds] as [typeof guess, typeof guesseds];
+}
+
+function guessWord(guess: Letter[]) {
+  return guess.map((l) => ({
+    letter: l,
+    color: "green",
+  })) as Guessed;
 }
 
 function useKeyDown(handleKeydown: (e: KeyboardEvent) => void) {

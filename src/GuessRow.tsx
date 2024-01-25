@@ -5,10 +5,10 @@ import { Guessed, letterToCardColorMap } from "./utils/types";
 export function GuessedRow(props: { guessed: Guessed }) {
   return (
     <Row>
-      {props.guessed.map((guessLetter, index) => (
+      {props.guessed.map((guessedLetter, index) => (
         <LetterCard
-          letter={guessLetter.letter}
-          color={letterToCardColorMap[guessLetter.color]}
+          letter={guessedLetter.letter}
+          color={letterToCardColorMap[guessedLetter.color]}
           fontColor="white"
           key={index}
         />

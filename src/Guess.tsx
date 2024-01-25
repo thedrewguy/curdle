@@ -3,7 +3,7 @@ import { Row } from "./Row";
 import { guessWords } from "./utils/guess-words";
 import { Letter } from "./utils/letters";
 
-export function ActiveRow(props: { letters: Letter[] }) {
+export function Guess(props: { letters: Letter[] }) {
   return (
     <Row>
       {Array(5)
