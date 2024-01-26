@@ -34,7 +34,6 @@ function keysFromLetters(
     <KeyboardCard
       letter={letter}
       color={letterToCardColorMap[coloring[letter]]}
-      fontColor={"white"}
       key={letter}
       onClick={() => handleKey(letter)}
     />

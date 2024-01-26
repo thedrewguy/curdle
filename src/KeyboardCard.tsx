@@ -1,15 +1,14 @@
 import { Card, CardProps, Typography } from "@mui/material";
 import { Letter } from "./data/letters";
-import { CardColor } from "./data/types";
+import { CardColor, cardToTextColorMap } from "./data/types";
 
 export function KeyboardCard(
   props: CardProps & {
     letter: Letter;
     color: CardColor;
-    fontColor: string;
   }
 ) {
-  const { letter, color, fontColor, ...cardProps } = props;
+  const { letter, color, ...cardProps } = props;
   return (
     <Card
       {...cardProps}
@@ -20,7 +19,7 @@ export function KeyboardCard(
       }}
     >
       <Typography
-        color={props.fontColor}
+        color={cardToTextColorMap[props.color]}
         textAlign="center"
         fontSize="16pt"
         minWidth="1em"

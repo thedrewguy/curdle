@@ -14,3 +14,11 @@ export const letterToCardColorMap = {
   lightgrey: "lightgrey",
   yellow: "goldenrod",
 } satisfies Record<KeyColor, CardColor>;
+
+export const cardToTextColorMap = {
+  green: "white",
+  grey: "white",
+  goldenrod: "white",
+  white: "black",
+  lightgrey: "black",
+} satisfies Record<CardColor, "white" | "black">;
