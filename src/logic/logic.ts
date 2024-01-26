@@ -64,7 +64,7 @@ function initialConstraints(): Constraints {
 
   const placement = Array(5)
     .fill(undefined)
-    .map((udf) => ({
+    .map(() => ({
       yes: undefined,
       no: new Set<Letter>(),
     })) as PositionConstraints;

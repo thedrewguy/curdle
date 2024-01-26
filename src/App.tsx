@@ -1,14 +1,15 @@
-import { Box, Stack, Typography, alpha } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { EntryRow } from "./EntryRow";
 import { GuessedRow } from "./GuessedRow";
+import { Keyboard } from "./Keyboard";
+import { Win } from "./Win";
 import { Letter, alphabet } from "./data/letters";
 import { Guessed } from "./data/types";
 import { colorGuess, makesValidWord } from "./logic/logic";
-import { Keyboard } from "./Keyboard";
 
 function App() {
-  const [entry, guesseds] = useGame();
+  const { entry, guesseds, win, clearGuesseds } = useGame();
 
   return (
     <div>
@@ -18,17 +19,16 @@ function App() {
       <Typography variant="subtitle1" textAlign="center">
         (Cursed Wordle)
       </Typography>
+      {win && <Win numGuesses={guesseds.length} reset={clearGuesseds} />}
       <br />
       <Stack spacing={1}>
         {guesseds.map((guessed, index) => (
           <GuessedRow guessed={guessed} key={index} />
         ))}
-        <EntryRow entry={entry} />
+        {!win && <EntryRow entry={entry} />}
       </Stack>
       <br />
-      <Stack spacing={1}>
-        <Keyboard guesseds={guesseds} />
-      </Stack>
+      <Keyboard guesseds={guesseds} />
     </div>
   );
 }
@@ -37,9 +37,12 @@ export default App;
 
 function useGame() {
   const [entry, addLetter, removeLetter, clearEntry] = useEntry();
-  const [guesseds, addGuessed] = useGuesseds();
+  const [guesseds, addGuessed, clearGuesseds] = useGuesseds();
 
   function handleKeydown(e: KeyboardEvent) {
+    if (e.altKey || e.ctrlKey || win) {
+      return;
+    }
     const keyUpper = e.key.toUpperCase();
     if ((alphabet as any).includes(keyUpper)) {
       addLetter(keyUpper as Letter);
@@ -56,7 +59,20 @@ function useGame() {
 
   useKeyDown(handleKeydown);
 
-  return [entry, guesseds] as [typeof entry, typeof guesseds];
+  const lastGuess =
+    guesseds.length > 0 ? guesseds[guesseds.length - 1] : undefined;
+  const win = !!lastGuess?.every((gl) => gl.color === "green");
+
+  return {
+    entry,
+    addLetter,
+    removeLetter,
+    clearEntry,
+    guesseds,
+    addGuessed,
+    clearGuesseds,
+    win,
+  };
 }
 
 function useKeyDown(handleKeydown: (e: KeyboardEvent) => void) {
@@ -75,7 +91,15 @@ function useGuesseds() {
     setGuesseds([...guesseds, guessed]);
   }
 
-  return [guesseds, addGuessed] as [typeof guesseds, typeof addGuessed];
+  function clearGuesseds() {
+    setGuesseds([]);
+  }
+
+  return [guesseds, addGuessed, clearGuesseds] as [
+    typeof guesseds,
+    typeof addGuessed,
+    typeof clearGuesseds
+  ];
 }
 
 function useEntry() {

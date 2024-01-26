@@ -1,15 +1,16 @@
 import { Letter } from "./letters";
 
 export type LetterColor = "green" | "yellow" | "grey";
-export type KeyColor = Letter | "lightgrey";
+export type KeyColor = LetterColor | "lightgrey";
 type GuessedLetter = { letter: Letter; color: LetterColor };
 export type Guess = Letter[];
 export type Guessed = GuessedLetter[];
 
-export type LetterCardColor = "green" | "grey" | "goldenrod" | "white";
+export type CardColor = "green" | "grey" | "goldenrod" | "white" | "lightgrey";
 
 export const letterToCardColorMap = {
   green: "green",
   grey: "grey",
+  lightgrey: "lightgrey",
   yellow: "goldenrod",
-} satisfies Record<LetterColor, LetterCardColor>;
+} satisfies Record<KeyColor, CardColor>;

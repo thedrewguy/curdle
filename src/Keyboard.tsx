@@ -12,7 +12,7 @@ export function Keyboard(props: { guesseds: Guessed[] }) {
     <Stack spacing={1}>
       <Row>{keysFromLetters("QWERTYUIOP", coloring)}</Row>
       <Row>{keysFromLetters("ASDFGHJKL", coloring)}</Row>
-      <Row>{keysFromLetters("ZXCVBNMN", coloring)}</Row>
+      <Row>{keysFromLetters("ZXCVBNM", coloring)}</Row>
     </Stack>
   );
 }
