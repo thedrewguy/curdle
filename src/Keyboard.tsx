@@ -9,6 +9,8 @@ import {
 } from "./data/types";
 import _ from "lodash";
 import { Row } from "./Row";
+import { EnterKey } from "./EnterKey";
+import { BackspaceKey } from "./BackspaceKey";
 
 export function Keyboard(props: {
   guesseds: Guessed[];
@@ -20,7 +22,11 @@ export function Keyboard(props: {
     <Stack spacing={1}>
       <Row>{keysFromLetters("QWERTYUIOP", coloring, props.handleKey)}</Row>
       <Row>{keysFromLetters("ASDFGHJKL", coloring, props.handleKey)}</Row>
-      <Row>{keysFromLetters("ZXCVBNM", coloring, props.handleKey)}</Row>
+      <Row>
+        <EnterKey onClick={() => props.handleKey("Enter")} />
+        {keysFromLetters("ZXCVBNM", coloring, props.handleKey)}
+        <BackspaceKey onClick={() => props.handleKey("Backspace")} />
+      </Row>
     </Stack>
   );
 }
