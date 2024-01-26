@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import { EntryRow } from "../grid/EntryRow";
 import { GuessedRow } from "../grid/GuessedRow";
 import { Keyboard } from "../keyboard/Keyboard";
@@ -11,24 +11,26 @@ function App() {
   useKeyDownListener(handleKey);
 
   return (
-    <div>
-      <Typography variant="h3" textAlign="center">
-        Curdle
-      </Typography>
-      <Typography variant="subtitle1" textAlign="center">
-        (Cursed Wordle)
-      </Typography>
-      {win && <Win numGuesses={guesseds.length} reset={clearGuesseds} />}
-      <br />
-      <Stack spacing={1}>
-        {guesseds.map((guessed, index) => (
-          <GuessedRow guessed={guessed} key={index} />
-        ))}
-        {!win && <EntryRow entry={entry} />}
+    <Container maxWidth="sm">
+      <Stack direction="column" spacing={1} justifyContent="space-between">
+        <Box minHeight="20vh">
+          <Typography variant="h3" textAlign="center">
+            Curdle
+          </Typography>
+          <Typography variant="subtitle1" textAlign="center">
+            (Cursed Wordle)
+          </Typography>
+          {win && <Win numGuesses={guesseds.length} reset={clearGuesseds} />}
+        </Box>
+        <Stack spacing={1} minHeight="50vh">
+          {guesseds.map((guessed, index) => (
+            <GuessedRow guessed={guessed} key={index} />
+          ))}
+          {!win && <EntryRow entry={entry} />}
+        </Stack>
+        <Keyboard guesseds={guesseds} handleKey={handleKey} />
       </Stack>
-      <br />
-      <Keyboard guesseds={guesseds} handleKey={handleKey} />
-    </div>
+    </Container>
   );
 }
 
