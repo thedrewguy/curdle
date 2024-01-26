@@ -19,28 +19,45 @@ const guessed: Guessed = [
   { letter: "E", color: "grey" },
 ];
 
-type Constraint = { min: number; max: number };
+type Constraint = {
+  min: number;
+  max: number;
+  placement: (boolean | undefined)[];
+};
 type Constraints = Record<Letter, Constraint>;
+
+function initialConstraint(): Constraint {
+  return { min: 0, max: 5, placement: Array(5).fill(undefined) };
+}
 
 function initialConstraints() {
   return Object.fromEntries(
-    alphabet.map((letter) => [letter, { min: 0, max: 5 }])
+    alphabet.map((letter) => [letter, initialConstraint()])
   ) as Constraints;
 }
 
 function narrowConstraints(constraints: Constraints, guessed: Guessed) {
-  const lettersInGuessed = _.uniq(guessed.map((gl) => gl.letter));
-
-  lettersInGuessed.forEach((letter) => {
-    const matchingGuessedLetters = guessed.filter((gl) => gl.letter === letter);
-    const greenish = matchingGuessedLetters.filter(
-      (gl) => gl.color === "green" || gl.color === "yellow"
-    ).length;
-    const grey = matchingGuessedLetters.filter(
-      (gl) => gl.color === "grey"
-    ).length;
-
+  _.uniq(guessed.map((gl) => gl.letter)).forEach((letter) => {
     const constraint = constraints[letter];
+    let greenish = 0;
+    let grey = 0;
+    guessed.forEach((gl, index) => {
+      if (gl.letter !== letter) {
+        return;
+      }
+      if (gl.color === "green") {
+        greenish++;
+        constraint.placement[index] = true;
+        return;
+      }
+      if (gl.color === "yellow") {
+        greenish++;
+        constraint.placement[index] = false;
+        return;
+      }
+      grey++;
+      constraint.placement[index] = false;
+    });
 
     if (greenish > constraint.min) {
       constraint.min = greenish;
