@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import { KeyboardCard } from "./KeyboardCard";
+import _ from "lodash";
 import { Letter, alphabet } from "../data/letters";
 import {
   Guessed,
@@ -7,10 +7,10 @@ import {
   LetterColor,
   letterToCardColorMap,
 } from "../data/types";
-import _ from "lodash";
 import { Row } from "../grid/Row";
-import { EnterKey } from "./EnterKey";
 import { BackspaceKey } from "./BackspaceKey";
+import { EnterKey } from "./EnterKey";
+import { LetterKey } from "./LetterKey";
 
 export function Keyboard(props: {
   guesseds: Guessed[];
@@ -37,7 +37,7 @@ function keysFromLetters(
   handleKey: (key: string) => void
 ) {
   return (letters.split("") as Letter[]).map((letter) => (
-    <KeyboardCard
+    <LetterKey
       letter={letter}
       color={letterToCardColorMap[coloring[letter]]}
       key={letter}

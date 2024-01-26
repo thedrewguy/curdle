@@ -1,14 +1,9 @@
-import { Card, CardProps, Typography } from "@mui/material";
+import { ButtonBaseProps, Typography } from "@mui/material";
+import { KeyboardButton } from "./KeyboardButton";
 
-export function EnterKey(props: CardProps) {
+export function EnterKey(props: ButtonBaseProps) {
   return (
-    <Card
-      {...props}
-      variant="outlined"
-      sx={{
-        backgroundColor: "lightgrey",
-      }}
-    >
+    <KeyboardButton {...props} color="lightgrey">
       <Typography
         color="black"
         textAlign="center"
@@ -19,6 +14,6 @@ export function EnterKey(props: CardProps) {
       >
         Enter
       </Typography>
-    </Card>
+    </KeyboardButton>
   );
 }
