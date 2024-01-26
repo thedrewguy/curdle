@@ -1,6 +1,7 @@
 import { Letter } from "./letters";
 
 export type LetterColor = "green" | "yellow" | "grey";
+export type KeyColor = Letter | "lightgrey";
 type GuessedLetter = { letter: Letter; color: LetterColor };
 export type Guess = Letter[];
 export type Guessed = GuessedLetter[];

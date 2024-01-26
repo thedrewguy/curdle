@@ -1,11 +1,11 @@
+import { Box, Stack, Typography, alpha } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Letter, alphabet } from "./data/letters";
 import { EntryRow } from "./EntryRow";
-import { makesValidWord } from "./logic/logic";
-import { Guess, Guessed as Guessed } from "./data/types";
 import { GuessedRow } from "./GuessedRow";
-import { Stack, Typography } from "@mui/material";
-import { guessWord } from "./logic/guess-word";
+import { Letter, alphabet } from "./data/letters";
+import { Guessed } from "./data/types";
+import { colorGuess, makesValidWord } from "./logic/logic";
+import { Keyboard } from "./Keyboard";
 
 function App() {
   const [entry, guesseds] = useGame();
@@ -18,12 +18,16 @@ function App() {
       <Typography variant="subtitle1" textAlign="center">
         (Cursed Wordle)
       </Typography>
-      <br></br>
+      <br />
       <Stack spacing={1}>
         {guesseds.map((guessed, index) => (
           <GuessedRow guessed={guessed} key={index} />
         ))}
         <EntryRow entry={entry} />
+      </Stack>
+      <br />
+      <Stack spacing={1}>
+        <Keyboard guesseds={guesseds} />
       </Stack>
     </div>
   );
@@ -44,7 +48,7 @@ function useGame() {
       removeLetter();
     }
     if (e.key === "Enter" && makesValidWord(entry)) {
-      const guessed = guessWord(entry as Guess, guesseds);
+      const guessed = colorGuess(entry, guesseds);
       addGuessed(guessed);
       clearEntry();
     }
@@ -65,15 +69,7 @@ function useKeyDown(handleKeydown: (e: KeyboardEvent) => void) {
 }
 
 function useGuesseds() {
-  const [guesseds, setGuesseds] = useState<Guessed[]>([
-    [
-      { letter: "S", color: "green" },
-      { letter: "N", color: "yellow" },
-      { letter: "A", color: "grey" },
-      { letter: "C", color: "green" },
-      { letter: "K", color: "green" },
-    ],
-  ]);
+  const [guesseds, setGuesseds] = useState<Guessed[]>([]);
 
   function addGuessed(guessed: Guessed) {
     setGuesseds([...guesseds, guessed]);

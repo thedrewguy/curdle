@@ -157,7 +157,9 @@ function coloringForAnswer(guess: Guess, answer: Guess): LetterColor[] {
   return coloring;
 }
 
-export function colorGuess(guess: Guess, constraints: Constraints): Guessed {
+export function colorGuess(guess: Guess, guesseds: Guessed[]): Guessed {
+  const constraints = initialConstraints();
+  guesseds.forEach((guessed) => narrowConstraints(constraints, guessed));
   const validAnswers = remainingValidAnswers(constraints);
   const answerColorings = validAnswers.map((answer) =>
     JSON.stringify(coloringForAnswer(guess, answer.split("") as Guess))
@@ -177,33 +179,3 @@ export function colorGuess(guess: Guess, constraints: Constraints): Guessed {
     color: coloring[index] as LetterColor,
   }));
 }
-
-const guessed: Guessed = [
-  { letter: "E", color: "yellow" },
-  { letter: "M", color: "yellow" },
-  { letter: "C", color: "grey" },
-  { letter: "E", color: "green" },
-  { letter: "E", color: "grey" },
-];
-const anotherGuessed: Guessed = [
-  { letter: "S", color: "grey" },
-  { letter: "M", color: "yellow" },
-  { letter: "E", color: "yellow" },
-  { letter: "E", color: "green" },
-  { letter: "E", color: "grey" },
-];
-const guesseds = [guessed, anotherGuessed];
-
-const c = initialConstraints();
-guesseds.forEach((guessed) => narrowConstraints(c, guessed));
-
-const remaining = remainingValidAnswers(c);
-
-console.dir(remaining);
-const guess: Guess = ["E", "M", "C", "E", "E"];
-console.log(coloringForAnswer(guess, ["M", "E", "T", "E", "R"]));
-
-console.log(colorGuess(guess, c));
-
-console.log(meetsPositionConstraints(["M", "E", "L", "E", "E"], c.position));
-console.log(meetsPositionConstraints(["M", "E", "T", "E", "R"], c.position));
