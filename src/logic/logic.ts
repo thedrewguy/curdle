@@ -2,53 +2,60 @@ import { Letter, alphabet } from "../data/letters";
 import { guessWords } from "../data/guess-words";
 import { Guess, Guessed } from "../data/types";
 import _ from "lodash";
+import { answerWords } from "../data/answer-words";
+
+const guessLetterCounts = Object.fromEntries(
+  guessWords.map((word) => [word, countLetters(word.split("") as Guess)])
+);
 
 export function makesValidWord(letters: Letter[]) {
   return guessWords.includes(letters.join(""));
 }
 
-export function fitsGuessed(guess: Guess, guessed: Guessed) {
-  return false;
+function meetsConstraints(guess: Guess, constraints: Constraints) {
+  return (
+    meetsPositionConstraints(guess, constraints.position) &&
+    meetsCountConstraints(guess, constraints.count)
+  );
 }
 
-function fitsConstraints(guess: Guess, constraints: Constraints) {
-  const letterCounts = _.countBy(guess);
+function meetsPositionConstraints(
+  guess: Guess,
+  constraints: PositionConstraints
+) {
   return guess.every((letter, index) => {
-    const countConstraint = constraints.count[letter];
-    const num = letterCounts[letter];
-    if (num > countConstraint.max || num < countConstraint.min) {
+    const constraint = constraints[index];
+    if (constraint.yes && constraint.yes !== letter) {
       return false;
     }
-
-    const placementConstraint = constraints.placement[index];
-    if (placementConstraint.yes && placementConstraint.yes !== letter) {
-      return false;
-    }
-    if (placementConstraint.no.has(letter)) {
+    if (constraint.no.has(letter)) {
       return false;
     }
     return true;
   });
 }
 
-const guessed: Guessed = [
-  { letter: "E", color: "yellow" },
-  { letter: "M", color: "yellow" },
-  { letter: "C", color: "grey" },
-  { letter: "E", color: "green" },
-  { letter: "E", color: "grey" },
-];
+function meetsCountConstraints(guess: Guess, constraints: CountConstraints) {
+  const letterCounts = guessLetterCounts[guess.join("")];
+  return Object.entries(letterCounts).every(([letter, count]) => {
+    const constraint = constraints[letter as Letter];
+    if (count < constraint.min || count > constraint.max) {
+      return false;
+    }
+    return true;
+  });
+}
 
-type PlacementConstraint = { yes: Letter | undefined; no: Set<Letter> };
-type PlacementConstraints = [
-  PlacementConstraint,
-  PlacementConstraint,
-  PlacementConstraint,
-  PlacementConstraint,
-  PlacementConstraint
+type PositionConstraint = { yes: Letter | undefined; no: Set<Letter> };
+type PositionConstraints = [
+  PositionConstraint,
+  PositionConstraint,
+  PositionConstraint,
+  PositionConstraint,
+  PositionConstraint
 ];
 type CountConstraints = Record<Letter, { min: number; max: number }>;
-type Constraints = { count: CountConstraints; placement: PlacementConstraints };
+type Constraints = { count: CountConstraints; position: PositionConstraints };
 
 function initialConstraints(): Constraints {
   const count = Object.fromEntries(
@@ -60,13 +67,13 @@ function initialConstraints(): Constraints {
     .map((udf) => ({
       yes: undefined,
       no: new Set<Letter>(),
-    })) as PlacementConstraints;
+    })) as PositionConstraints;
 
-  return { count: count, placement: placement };
+  return { count: count, position: placement };
 }
 
 function narrowConstraints(constraints: Constraints, guessed: Guessed) {
-  const { count, placement } = constraints;
+  const { count, position } = constraints;
 
   _.uniq(guessed.map((gl) => gl.letter)).forEach((letter) => {
     const letterCountConstraint = count[letter];
@@ -78,16 +85,16 @@ function narrowConstraints(constraints: Constraints, guessed: Guessed) {
       }
       if (gl.color === "green") {
         greenish++;
-        placement[index].yes = letter;
+        position[index].yes = letter;
         return;
       }
       if (gl.color === "yellow") {
         greenish++;
-        placement[index].no.add(letter);
+        position[index].no.add(letter);
         return;
       }
       grey++;
-      placement[index].no.add(letter);
+      position[index].no.add(letter);
     });
 
     if (greenish > letterCountConstraint.min) {
@@ -100,9 +107,29 @@ function narrowConstraints(constraints: Constraints, guessed: Guessed) {
   });
 }
 
-const c = initialConstraints();
-narrowConstraints(c, guessed);
-console.dir(c, { depth: Infinity });
+function countLetters(guess: Guess) {
+  return Object.fromEntries(
+    alphabet.map((letter) => [letter, guess.filter((l) => l === letter).length])
+  ) as Record<Letter, number>;
+}
 
-console.log(fitsConstraints(["M", "E", "L", "E", "E"], c));
-console.log(fitsConstraints(["M", "E", "T", "E", "R"], c));
+const guessed: Guessed = [
+  { letter: "E", color: "yellow" },
+  { letter: "M", color: "yellow" },
+  { letter: "C", color: "grey" },
+  { letter: "E", color: "green" },
+  { letter: "E", color: "grey" },
+];
+const guesseds = [guessed];
+
+const c = initialConstraints();
+guesseds.forEach((guessed) => narrowConstraints(c, guessed));
+
+const remaining = answerWords.filter((word) =>
+  meetsConstraints(word.split("") as Guess, c)
+);
+
+console.dir(remaining);
+
+console.log(meetsPositionConstraints(["M", "E", "L", "E", "E"], c.position));
+console.log(meetsPositionConstraints(["M", "E", "T", "E", "R"], c.position));
