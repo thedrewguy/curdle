@@ -37,8 +37,12 @@ function initialConstraints() {
 }
 
 function narrowConstraints(constraints: Constraints, guessed: Guessed) {
+  const newConstraints = { ...constraints };
   _.uniq(guessed.map((gl) => gl.letter)).forEach((letter) => {
-    const constraint = constraints[letter];
+    const newConstraint = {
+      ...constraints[letter],
+      placement: [...constraints[letter].placement],
+    };
     let greenish = 0;
     let grey = 0;
     guessed.forEach((gl, index) => {
@@ -47,32 +51,35 @@ function narrowConstraints(constraints: Constraints, guessed: Guessed) {
       }
       if (gl.color === "green") {
         greenish++;
-        constraint.placement[index] = true;
+        newConstraint.placement[index] = true;
         return;
       }
       if (gl.color === "yellow") {
         greenish++;
-        constraint.placement[index] = false;
+        newConstraint.placement[index] = false;
         return;
       }
       grey++;
-      constraint.placement[index] = false;
+      newConstraint.placement[index] = false;
     });
 
-    if (greenish > constraint.min) {
-      constraint.min = greenish;
+    if (greenish > newConstraint.min) {
+      newConstraint.min = greenish;
     }
     if (grey) {
-      constraint.max = greenish;
+      newConstraint.max = greenish;
     }
+    newConstraints[letter] = newConstraint;
   });
+  return newConstraints;
 }
 
 const constraints = initialConstraints();
 
-narrowConstraints(constraints, guessed);
+const newConstraints = narrowConstraints(constraints, guessed);
 
 console.dir(constraints, { depth: Infinity });
+console.dir(newConstraints, { depth: Infinity });
 
 console.log(fitsGuessed(["M", "E", "L", "E", "E"], guessed));
 console.log(fitsGuessed(["M", "E", "T", "E", "R"], guessed));
