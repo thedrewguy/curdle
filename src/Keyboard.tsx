@@ -10,25 +10,33 @@ import {
 import _ from "lodash";
 import { Row } from "./Row";
 
-export function Keyboard(props: { guesseds: Guessed[] }) {
+export function Keyboard(props: {
+  guesseds: Guessed[];
+  handleKey: (key: string) => void;
+}) {
   const coloring = keyboardColoring(props.guesseds);
 
   return (
     <Stack spacing={1}>
-      <Row>{keysFromLetters("QWERTYUIOP", coloring)}</Row>
-      <Row>{keysFromLetters("ASDFGHJKL", coloring)}</Row>
-      <Row>{keysFromLetters("ZXCVBNM", coloring)}</Row>
+      <Row>{keysFromLetters("QWERTYUIOP", coloring, props.handleKey)}</Row>
+      <Row>{keysFromLetters("ASDFGHJKL", coloring, props.handleKey)}</Row>
+      <Row>{keysFromLetters("ZXCVBNM", coloring, props.handleKey)}</Row>
     </Stack>
   );
 }
 
-function keysFromLetters(letters: string, coloring: Record<Letter, KeyColor>) {
+function keysFromLetters(
+  letters: string,
+  coloring: Record<Letter, KeyColor>,
+  handleKey: (key: string) => void
+) {
   return (letters.split("") as Letter[]).map((letter) => (
     <KeyboardCard
       letter={letter}
       color={letterToCardColorMap[coloring[letter]]}
       fontColor={"white"}
       key={letter}
+      onClick={() => handleKey(letter)}
     />
   ));
 }

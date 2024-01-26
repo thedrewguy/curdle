@@ -9,7 +9,8 @@ import { Guessed } from "./data/types";
 import { colorGuess, makesValidWord } from "./logic/logic";
 
 function App() {
-  const { entry, guesseds, win, clearGuesseds } = useGame();
+  const { entry, guesseds, win, clearGuesseds, handleKey } = useGame();
+  useKeyDownListener(handleKey);
 
   return (
     <div>
@@ -28,7 +29,7 @@ function App() {
         {!win && <EntryRow entry={entry} />}
       </Stack>
       <br />
-      <Keyboard guesseds={guesseds} />
+      <Keyboard guesseds={guesseds} handleKey={handleKey} />
     </div>
   );
 }
@@ -39,43 +40,46 @@ function useGame() {
   const [entry, addLetter, removeLetter, clearEntry] = useEntry();
   const [guesseds, addGuessed, clearGuesseds] = useGuesseds();
 
-  function handleKeydown(e: KeyboardEvent) {
-    if (e.altKey || e.ctrlKey || win) {
+  const lastGuess =
+    guesseds.length > 0 ? guesseds[guesseds.length - 1] : undefined;
+  const win = !!lastGuess?.every((gl) => gl.color === "green");
+
+  function handleKey(key: string) {
+    if (win) {
       return;
     }
-    const keyUpper = e.key.toUpperCase();
+    const keyUpper = key.toUpperCase();
     if ((alphabet as any).includes(keyUpper)) {
       addLetter(keyUpper as Letter);
     }
-    if (e.key === "Backspace") {
+    if (key === "Backspace") {
       removeLetter();
     }
-    if (e.key === "Enter" && makesValidWord(entry)) {
+    if (key === "Enter" && makesValidWord(entry)) {
       const guessed = colorGuess(entry, guesseds);
       addGuessed(guessed);
       clearEntry();
     }
   }
 
-  useKeyDown(handleKeydown);
-
-  const lastGuess =
-    guesseds.length > 0 ? guesseds[guesseds.length - 1] : undefined;
-  const win = !!lastGuess?.every((gl) => gl.color === "green");
-
   return {
     entry,
-    addLetter,
-    removeLetter,
-    clearEntry,
     guesseds,
-    addGuessed,
     clearGuesseds,
     win,
+    handleKey,
   };
 }
 
-function useKeyDown(handleKeydown: (e: KeyboardEvent) => void) {
+function useKeyDownListener(handleKey: (key: string) => void) {
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.altKey || e.ctrlKey) {
+      return;
+    }
+
+    handleKey(e.key);
+  }
+
   useEffect(() => {
     document.addEventListener("keydown", handleKeydown);
     return () => {
