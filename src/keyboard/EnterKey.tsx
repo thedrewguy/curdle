@@ -7,7 +7,7 @@ export function EnterKey(props: ButtonBaseProps) {
       <Typography
         color="black"
         textAlign="center"
-        fontSize="16pt"
+        fontSize="1rem"
         minWidth="1em"
         paddingX=".25em"
         paddingY=".25em"

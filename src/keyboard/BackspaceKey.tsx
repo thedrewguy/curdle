@@ -5,7 +5,7 @@ import { KeyboardButton } from "./KeyboardButton";
 export function BackspaceKey(props: ButtonBaseProps) {
   return (
     <KeyboardButton {...props} color="lightgrey">
-      <BackspaceIcon sx={{ paddingX: ".5em", color: "black" }} />
+      <BackspaceIcon sx={{ paddingX: ".25em", color: "black" }} />
     </KeyboardButton>
   );
 }
