@@ -1,10 +1,10 @@
 import { Card, Typography } from "@mui/material";
 import { Letter } from "./data/letters";
-import { KeyColor } from "./data/types";
+import { CardColor } from "./data/types";
 
 export function KeyboardCard(props: {
   letter: Letter;
-  color: KeyColor;
+  color: CardColor;
   fontColor: string;
 }) {
   return (

@@ -1,7 +1,12 @@
 import { Stack } from "@mui/material";
 import { KeyboardCard } from "./KeyboardCard";
 import { Letter, alphabet } from "./data/letters";
-import { Guessed, KeyColor, LetterColor } from "./data/types";
+import {
+  Guessed,
+  KeyColor,
+  LetterColor,
+  letterToCardColorMap,
+} from "./data/types";
 import _ from "lodash";
 import { Row } from "./Row";
 
@@ -21,7 +26,7 @@ function keysFromLetters(letters: string, coloring: Record<Letter, KeyColor>) {
   return (letters.split("") as Letter[]).map((letter) => (
     <KeyboardCard
       letter={letter}
-      color={coloring[letter]}
+      color={letterToCardColorMap[coloring[letter]]}
       fontColor={"white"}
       key={letter}
     />
