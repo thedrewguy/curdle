@@ -1,11 +1,11 @@
-import { Letter, alphabet } from "../data/letters";
-import { guessWords } from "../data/guess-words";
-import { Guess, Guessed } from "../data/types";
 import _ from "lodash";
 import { answerWords } from "../data/answer-words";
+import { guessWords } from "../data/guess-words";
+import { Letter, alphabet } from "../data/letters";
+import { Guess, Guessed, LetterColor } from "../data/types";
 
-const guessLetterCounts = Object.fromEntries(
-  guessWords.map((word) => [word, countLetters(word.split("") as Guess)])
+const letterCountsByAnswer = Object.fromEntries(
+  answerWords.map((word) => [word, countLetters(word.split("") as Guess)])
 );
 
 export function makesValidWord(letters: Letter[]) {
@@ -35,8 +35,8 @@ function meetsPositionConstraints(
   });
 }
 
-function meetsCountConstraints(guess: Guess, constraints: CountConstraints) {
-  const letterCounts = guessLetterCounts[guess.join("")];
+function meetsCountConstraints(answer: Guess, constraints: CountConstraints) {
+  const letterCounts = letterCountsByAnswer[answer.join("")];
   return Object.entries(letterCounts).every(([letter, count]) => {
     const constraint = constraints[letter as Letter];
     if (count < constraint.min || count > constraint.max) {
@@ -113,6 +113,50 @@ function countLetters(guess: Guess) {
   ) as Record<Letter, number>;
 }
 
+function remainingValidAnswers(constraints: Constraints) {
+  return answerWords.filter((word) =>
+    meetsConstraints(word.split("") as Guess, constraints)
+  );
+}
+
+function coloringForAnswer(guess: Guess, answer: Guess): LetterColor[] {
+  const guessLetterCounts = {} as Partial<Record<Letter, number>>;
+
+  const coloringGreenOnly: ("green" | undefined)[] = answer.map(
+    (answerLetter, index) => {
+      const guessLetter = guess[index];
+      if (guessLetter !== answerLetter) {
+        return;
+      }
+
+      guessLetterCounts[guessLetter] =
+        (guessLetterCounts[guessLetter] ?? 0) + 1;
+
+      return "green";
+    }
+  );
+
+  const coloring = coloringGreenOnly.map((color, index) => {
+    if (color) {
+      return color;
+    }
+
+    const guessLetter = guess[index];
+
+    let guessLetterCount = (guessLetterCounts[guessLetter] ?? 0) + 1;
+    guessLetterCounts[guessLetter] = guessLetterCount;
+
+    if (
+      guessLetterCount <= letterCountsByAnswer[answer.join("")][guessLetter]
+    ) {
+      return "yellow";
+    }
+    return "grey";
+  });
+
+  return coloring;
+}
+
 const guessed: Guessed = [
   { letter: "E", color: "yellow" },
   { letter: "M", color: "yellow" },
@@ -120,16 +164,25 @@ const guessed: Guessed = [
   { letter: "E", color: "green" },
   { letter: "E", color: "grey" },
 ];
-const guesseds = [guessed];
+const anotherGuessed: Guessed = [
+  { letter: "S", color: "grey" },
+  { letter: "M", color: "yellow" },
+  { letter: "E", color: "yellow" },
+  { letter: "E", color: "green" },
+  { letter: "E", color: "grey" },
+];
+const guesseds = [guessed, anotherGuessed];
 
 const c = initialConstraints();
 guesseds.forEach((guessed) => narrowConstraints(c, guessed));
 
-const remaining = answerWords.filter((word) =>
-  meetsConstraints(word.split("") as Guess, c)
-);
+const remaining = remainingValidAnswers(c);
 
 console.dir(remaining);
+
+console.log(
+  coloringForAnswer(["E", "M", "C", "E", "E"], ["M", "E", "T", "E", "R"])
+);
 
 console.log(meetsPositionConstraints(["M", "E", "L", "E", "E"], c.position));
 console.log(meetsPositionConstraints(["M", "E", "T", "E", "R"], c.position));
