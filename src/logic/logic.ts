@@ -11,16 +11,24 @@ export function fitsGuessed(guess: Guess, guessed: Guessed) {
   return false;
 }
 
-function fitsConstraints(guess: Guess, constraints: CountConstraints) {
+function fitsConstraints(guess: Guess, constraints: Constraints) {
   const letterCounts = _.countBy(guess);
-  guess.forEach((letter, index) => {
-    const constraint = constraints[letter];
+  return guess.every((letter, index) => {
+    const countConstraint = constraints.count[letter];
     const num = letterCounts[letter];
-    if (num > constraint.max || num < constraint.min) {
+    if (num > countConstraint.max || num < countConstraint.min) {
       return false;
     }
+
+    const placementConstraint = constraints.placement[index];
+    if (placementConstraint.yes && placementConstraint.yes !== letter) {
+      return false;
+    }
+    if (placementConstraint.no.has(letter)) {
+      return false;
+    }
+    return true;
   });
-  return true;
 }
 
 const guessed: Guessed = [
@@ -31,7 +39,7 @@ const guessed: Guessed = [
   { letter: "E", color: "grey" },
 ];
 
-type PlacementConstraint = { yes: Set<Letter>; no: Set<Letter> };
+type PlacementConstraint = { yes: Letter | undefined; no: Set<Letter> };
 type PlacementConstraints = [
   PlacementConstraint,
   PlacementConstraint,
@@ -50,7 +58,7 @@ function initialConstraints(): Constraints {
   const placement = Array(5)
     .fill(undefined)
     .map((udf) => ({
-      yes: new Set<Letter>(),
+      yes: undefined,
       no: new Set<Letter>(),
     })) as PlacementConstraints;
 
@@ -70,7 +78,7 @@ function narrowConstraints(constraints: Constraints, guessed: Guessed) {
       }
       if (gl.color === "green") {
         greenish++;
-        placement[index].yes.add(letter);
+        placement[index].yes = letter;
         return;
       }
       if (gl.color === "yellow") {
@@ -96,5 +104,5 @@ const c = initialConstraints();
 narrowConstraints(c, guessed);
 console.dir(c, { depth: Infinity });
 
-console.log(fitsGuessed(["M", "E", "L", "E", "E"], guessed));
-console.log(fitsGuessed(["M", "E", "T", "E", "R"], guessed));
+console.log(fitsConstraints(["M", "E", "L", "E", "E"], c));
+console.log(fitsConstraints(["M", "E", "T", "E", "R"], c));
