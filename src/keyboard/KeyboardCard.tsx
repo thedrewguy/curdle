@@ -1,6 +1,6 @@
 import { Card, CardProps, Typography } from "@mui/material";
-import { Letter } from "./data/letters";
-import { CardColor, cardToTextColorMap } from "./data/types";
+import { Letter } from "../data/letters";
+import { CardColor, cardToTextColorMap } from "../data/types";
 
 export function KeyboardCard(
   props: CardProps & {

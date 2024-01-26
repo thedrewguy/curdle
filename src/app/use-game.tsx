@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { Letter, alphabet } from "./data/letters";
-import { Guessed } from "./data/types";
-import { colorGuess, makesValidWord } from "./logic/logic";
+import { useState } from "react";
+import { Letter, alphabet } from "../data/letters";
+import { Guessed } from "../data/types";
+import { colorGuess, makesValidWord } from "../logic/logic";
 
 export function useGame() {
   const [entry, addLetter, removeLetter, clearEntry] = useEntry();
@@ -39,23 +39,6 @@ export function useGame() {
     win,
     handleKey,
   };
-}
-
-export function useKeyDownListener(handleKey: (key: string) => void) {
-  function handleKeydown(e: KeyboardEvent) {
-    if (e.altKey || e.ctrlKey) {
-      return;
-    }
-
-    handleKey(e.key);
-  }
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeydown);
-    return () => {
-      document.removeEventListener("keydown", handleKeydown);
-    };
-  });
 }
 
 function useGuesseds() {

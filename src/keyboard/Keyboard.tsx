@@ -1,14 +1,14 @@
 import { Stack } from "@mui/material";
 import { KeyboardCard } from "./KeyboardCard";
-import { Letter, alphabet } from "./data/letters";
+import { Letter, alphabet } from "../data/letters";
 import {
   Guessed,
   KeyColor,
   LetterColor,
   letterToCardColorMap,
-} from "./data/types";
+} from "../data/types";
 import _ from "lodash";
-import { Row } from "./Row";
+import { Row } from "../grid/Row";
 import { EnterKey } from "./EnterKey";
 import { BackspaceKey } from "./BackspaceKey";
 

@@ -1,9 +1,10 @@
 import { Stack, Typography } from "@mui/material";
-import { EntryRow } from "./EntryRow";
-import { GuessedRow } from "./GuessedRow";
-import { Keyboard } from "./Keyboard";
+import { EntryRow } from "../grid/EntryRow";
+import { GuessedRow } from "../grid/GuessedRow";
+import { Keyboard } from "../keyboard/Keyboard";
 import { Win } from "./Win";
-import { useGame, useKeyDownListener } from "./game-hooks";
+import { useGame } from "./game-hooks";
+import { useKeyDownListener } from "./useKeyDownListener";
 
 function App() {
   const { entry, guesseds, win, clearGuesseds, handleKey } = useGame();
