@@ -3,8 +3,8 @@ import { EntryRow } from "../grid/EntryRow";
 import { GuessedRow } from "../grid/GuessedRow";
 import { Keyboard } from "../keyboard/Keyboard";
 import { Win } from "./Win";
-import { useGame } from "./game-hooks";
-import { useKeyDownListener } from "./useKeyDownListener";
+import { useGame } from "./use-game";
+import { useKeyDownListener } from "./use-keydown-listener";
 
 function App() {
   const { entry, guesseds, win, clearGuesseds, handleKey } = useGame();
