@@ -157,6 +157,27 @@ function coloringForAnswer(guess: Guess, answer: Guess): LetterColor[] {
   return coloring;
 }
 
+export function colorGuess(guess: Guess, constraints: Constraints): Guessed {
+  const validAnswers = remainingValidAnswers(constraints);
+  const answerColorings = validAnswers.map((answer) =>
+    JSON.stringify(coloringForAnswer(guess, answer.split("") as Guess))
+  );
+  const commonestColoring = _.head(
+    _(answerColorings).countBy().entries().maxBy(_.last)
+  );
+
+  if (typeof commonestColoring !== "string") {
+    throw new Error("no colorings found");
+  }
+
+  const coloring = JSON.parse(commonestColoring);
+
+  return guess.map((letter, index) => ({
+    letter: letter,
+    color: coloring[index] as LetterColor,
+  }));
+}
+
 const guessed: Guessed = [
   { letter: "E", color: "yellow" },
   { letter: "M", color: "yellow" },
@@ -179,10 +200,10 @@ guesseds.forEach((guessed) => narrowConstraints(c, guessed));
 const remaining = remainingValidAnswers(c);
 
 console.dir(remaining);
+const guess: Guess = ["E", "M", "C", "E", "E"];
+console.log(coloringForAnswer(guess, ["M", "E", "T", "E", "R"]));
 
-console.log(
-  coloringForAnswer(["E", "M", "C", "E", "E"], ["M", "E", "T", "E", "R"])
-);
+console.log(colorGuess(guess, c));
 
 console.log(meetsPositionConstraints(["M", "E", "L", "E", "E"], c.position));
 console.log(meetsPositionConstraints(["M", "E", "T", "E", "R"], c.position));
