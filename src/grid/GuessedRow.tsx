@@ -9,7 +9,6 @@ export function GuessedRow(props: { guessed: Guessed }) {
         <LetterCard
           letter={guessedLetter.letter}
           color={letterToCardColorMap[guessedLetter.color]}
-          fontColor="white"
           key={index}
         />
       ))}

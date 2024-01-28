@@ -6,7 +6,14 @@ type GuessedLetter = { letter: Letter; color: LetterColor };
 export type Guess = Letter[];
 export type Guessed = GuessedLetter[];
 
-export type CardColor = "green" | "grey" | "goldenrod" | "white" | "lightgrey";
+export type CardColor =
+  | "green"
+  | "grey"
+  | "goldenrod"
+  | "white"
+  | "lightgrey"
+  | "black"
+  | "darkred";
 
 export const letterToCardColorMap = {
   green: "green",
@@ -21,4 +28,6 @@ export const cardToTextColorMap = {
   goldenrod: "white",
   white: "black",
   lightgrey: "black",
+  black: "white",
+  darkred: "white",
 } satisfies Record<CardColor, "white" | "black">;

@@ -1,12 +1,8 @@
 import { Card, Typography } from "@mui/material";
 import { Letter } from "../data/letters";
-import { CardColor } from "../data/types";
+import { CardColor, cardToTextColorMap } from "../data/types";
 
-export function LetterCard(props: {
-  letter?: Letter;
-  color: CardColor;
-  fontColor: string;
-}) {
+export function LetterCard(props: { letter?: Letter; color: CardColor }) {
   return (
     <Card
       className="card"
@@ -16,7 +12,7 @@ export function LetterCard(props: {
       }}
     >
       <Typography
-        color={props.fontColor}
+        color={cardToTextColorMap[props.color]}
         textAlign="center"
         fontSize="20pt"
         width={"1.5em"}

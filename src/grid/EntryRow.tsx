@@ -9,12 +9,7 @@ export function EntryRow(props: { entry: Letter[] }) {
       {Array(5)
         .fill(undefined)
         .map((udf, index) => (
-          <LetterCard
-            letter={props.entry[index]}
-            color="white"
-            fontColor={getFontColor(props.entry)}
-            key={index}
-          />
+          <LetterCard letter={props.entry[index]} color="white" key={index} />
         ))}
     </Row>
   );
