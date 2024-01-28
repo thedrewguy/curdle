@@ -3,16 +3,16 @@ import { LetterCard } from "../grid/LetterCard";
 
 export function Header(props: BoxProps) {
   return (
-    <Box display="flex" justifyContent="center">
+    <Box {...props} display="flex" justifyContent="center">
       <Box display="flex" flexDirection="column">
         <Box display="flex">
           <Box width="50%" />
-          <Box width="8px" />
           <Typography
             width="50%"
             fontWeight="bold"
             textAlign="center"
             fontSize=".75rem"
+            marginLeft="8px"
           >
             wor
           </Typography>
@@ -32,10 +32,10 @@ export function Header(props: BoxProps) {
             fontWeight="bold"
             textAlign="center"
             fontSize=".75rem"
+            marginRight="8px"
           >
             sed
           </Typography>
-          <Box width="8px" />
           <Box width="50%" />
         </Box>
       </Box>

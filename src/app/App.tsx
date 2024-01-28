@@ -1,4 +1,4 @@
-import { Container, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { GameGrid } from "../grid/GameGrid";
 import { Keyboard } from "../keyboard/Keyboard";
 import { Header } from "./Header";
@@ -11,31 +11,23 @@ function App() {
   useKeyDownListener(handleKey);
 
   return (
-    <Container maxWidth="sm">
-      <Stack
-        minHeight="90vh"
-        direction="column"
-        spacing={1}
-        justifyContent="space-between"
-      >
-        <Header
-        // bgcolor="lightskyblue"
-        />
-        {win && <Win numGuesses={guesseds.length} reset={clearGuesseds} />}
+    <Box height="90vh" display="flex" flexDirection="column">
+      <Header paddingBottom="24px" height="20%" />
 
-        <GameGrid
-          guesseds={guesseds}
-          entry={entry}
-          win={win}
-          // sx={{ backgroundColor: "lightseagreen" }}
-        />
-        <Keyboard
-          guesseds={guesseds}
-          handleKey={handleKey}
-          // sx={{ backgroundColor: "lightslategrey" }}
-        />
+      <Stack justifyContent="space-between" height="100%">
+        <Stack>
+          <GameGrid padding="8px" guesseds={guesseds} entry={entry} win={win} />
+          {win && (
+            <Win
+              padding="8px"
+              numGuesses={guesseds.length}
+              reset={clearGuesseds}
+            />
+          )}
+        </Stack>
+        <Keyboard padding="8px" guesseds={guesseds} handleKey={handleKey} />
       </Stack>
-    </Container>
+    </Box>
   );
 }
 

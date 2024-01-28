@@ -19,6 +19,7 @@ export function GameGrid(
       {numSkeletons > 0 &&
         Array(numSkeletons)
           .fill(undefined)
+          // @ts-ignore
           .map((udf, index) => <EntryRow key={index} entry={[]} />)}
     </Stack>
   );
