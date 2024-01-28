@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Stack, StackProps } from "@mui/material";
 import _ from "lodash";
 import { Letter, alphabet } from "../data/letters";
 import {
@@ -12,14 +12,17 @@ import { BackspaceKey } from "./BackspaceKey";
 import { EnterKey } from "./EnterKey";
 import { LetterKey } from "./LetterKey";
 
-export function Keyboard(props: {
-  guesseds: Guessed[];
-  handleKey: (key: string) => void;
-}) {
+export function Keyboard(
+  props: StackProps & {
+    guesseds: Guessed[];
+    handleKey: (key: string) => void;
+  }
+) {
+  const { guesseds, handleKey, ...stackProps } = props;
   const coloring = keyboardColoring(props.guesseds);
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} {...stackProps}>
       <Row>{keysFromLetters("QWERTYUIOP", coloring, props.handleKey)}</Row>
       <Row>{keysFromLetters("ASDFGHJKL", coloring, props.handleKey)}</Row>
       <Row>

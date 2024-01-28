@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 
 export function Win(props: { numGuesses: number; reset: () => void }) {
   return (
@@ -9,9 +9,11 @@ export function Win(props: { numGuesses: number; reset: () => void }) {
       <Typography variant="h3" textAlign="center">
         {`${props.numGuesses} guesses`}
       </Typography>
-      <Button variant="contained" onClick={props.reset}>
-        Play again
-      </Button>
+      <Box display="flex" justifyContent="center">
+        <Button variant="contained" onClick={props.reset}>
+          Play again
+        </Button>
+      </Box>
     </Stack>
   );
 }
