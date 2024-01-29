@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Letter, alphabet } from "../data/letters";
 import { Guessed } from "../data/types";
-import { colorGuess, makesValidWord } from "../logic/logic";
+import { makesValidWord } from "../logic/makes-valid-word";
+import { colorGuess } from "../logic/color-guess";
 
 export function useGame() {
   const [entry, addLetter, removeLetter, clearEntry] = useEntry();

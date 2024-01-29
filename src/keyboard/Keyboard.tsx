@@ -61,6 +61,7 @@ function keyboardColoring(guesseds: Guessed[]) {
 
   return letterMap as Record<Letter, KeyColor>;
 }
+
 function addColorToKeyboard(
   guessedLetters: Guessed,
   letterMap: { [k: string]: string },
