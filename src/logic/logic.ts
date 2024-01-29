@@ -113,12 +113,6 @@ function countLetters(guess: Guess) {
   ) as Record<Letter, number>;
 }
 
-function remainingValidAnswers(constraints: Constraints) {
-  return answerWords.filter((word) =>
-    meetsConstraints(word.split("") as Guess, constraints)
-  );
-}
-
 function coloringForAnswer(guess: Guess, answer: Guess): LetterColor[] {
   const guessLetterCounts = {} as Partial<Record<Letter, number>>;
 
@@ -157,25 +151,50 @@ function coloringForAnswer(guess: Guess, answer: Guess): LetterColor[] {
   return coloring;
 }
 
-export function colorGuess(guess: Guess, guesseds: Guessed[]): Guessed {
+function getPotentialAnswers(guesseds: Guessed[]) {
   const constraints = initialConstraints();
   guesseds.forEach((guessed) => narrowConstraints(constraints, guessed));
-  const validAnswers = remainingValidAnswers(constraints);
-  const answerColorings = validAnswers.map((answer) =>
+
+  return answerWords.filter((word) =>
+    meetsConstraints(word.split("") as Guess, constraints)
+  );
+}
+
+function colorPotentialAnswers(answers: string[], guess: Guess) {
+  return answers.map((answer) =>
     JSON.stringify(coloringForAnswer(guess, answer.split("") as Guess))
   );
-  const commonestColoring = _.head(
-    _(answerColorings).countBy().entries().maxBy(_.last)
-  );
+}
 
-  if (typeof commonestColoring !== "string") {
-    throw new Error("no colorings found");
+export function colorGuess(guess: Guess, guesseds: Guessed[]): Guessed {
+  const potentialAnswers = getPotentialAnswers(guesseds);
+  const answerColorings = colorPotentialAnswers(potentialAnswers, guess);
+  const coloringString = chooseFromColorings(answerColorings);
+
+  if (!coloringString) {
+    throw new Error("No coloring could be determined 🤔");
   }
 
-  const coloring = JSON.parse(commonestColoring);
+  const coloring = JSON.parse(coloringString);
 
   return guess.map((letter, index) => ({
     letter: letter,
     color: coloring[index] as LetterColor,
   }));
+}
+
+function chooseFromColorings(colorings: string[]) {
+  const bestTwo = _(colorings)
+    .countBy() // count by frequency
+    .entries()
+    .sortBy(_.last) // sort by count
+    .takeRight(2) // take two commonest
+    .map((arr) => arr[0] as string); // just the string
+
+  if (bestTwo.size() === 1) {
+    return bestTwo.first();
+  }
+  const allGreen = '["green","green","green","green","green"]';
+  // if tied with winning coloring, remove winning coloring
+  return bestTwo.pull(allGreen).last();
 }
