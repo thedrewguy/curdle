@@ -1,4 +1,4 @@
-import { CardColor, cardColors } from "../data/types";
+import { CardColor, cardColors } from '../data/types';
 
 export function LetterCard(props: {
   letter?: string;
@@ -6,10 +6,10 @@ export function LetterCard(props: {
   fontSize?: string;
 }) {
   let colors = cardColors[props.color];
-  let fontSize = props.fontSize ?? "text-3xl";
+  let fontSize = props.fontSize ?? 'text-3xl';
   return (
     <div
-      className={`flex justify-center items-center ${colors.bg} border rounded-md ${fontSize} w-[1.5em] h-[1.5em] ${colors.text} `}
+      className={`flex items-center justify-center ${colors.bg} rounded-md border ${fontSize} h-[1.5em] w-[1.5em] ${colors.text} `}
     >
       {props.letter}
     </div>

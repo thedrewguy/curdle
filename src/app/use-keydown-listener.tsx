@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 export function useKeyDownListener(handleKey: (key: string) => void) {
   function handleKeydown(e: KeyboardEvent) {
@@ -10,9 +10,9 @@ export function useKeyDownListener(handleKey: (key: string) => void) {
   }
 
   useEffect(() => {
-    document.addEventListener("keydown", handleKeydown);
+    document.addEventListener('keydown', handleKeydown);
     return () => {
-      document.removeEventListener("keydown", handleKeydown);
+      document.removeEventListener('keydown', handleKeydown);
     };
   });
 }

@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export function chooseFromColorings(colorings: string[]) {
   const bestTwo = _(colorings)
@@ -6,7 +6,7 @@ export function chooseFromColorings(colorings: string[]) {
     .entries()
     .sortBy(_.last) // sort by count
     .takeRight(2) // take two commonest
-    .map((arr) => arr[0] as string); // just the string
+    .map(arr => arr[0] as string); // just the string
 
   if (bestTwo.size() === 1) {
     return bestTwo.first();

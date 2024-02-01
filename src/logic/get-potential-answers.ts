@@ -1,8 +1,8 @@
-import _ from "lodash";
-import { answerWords } from "../data/answer-words";
-import { Letter, alphabet } from "../data/letters";
-import { Guessed } from "../data/types";
-import { countLetters } from "./count-letters";
+import _ from 'lodash';
+import { answerWords } from '../data/answer-words';
+import { Letter, alphabet } from '../data/letters';
+import { Guessed } from '../data/types';
+import { countLetters } from './count-letters';
 
 type PositionConstraint = { yes: Letter | undefined; no: Set<Letter> };
 type PositionConstraints = [
@@ -10,28 +10,28 @@ type PositionConstraints = [
   PositionConstraint,
   PositionConstraint,
   PositionConstraint,
-  PositionConstraint
+  PositionConstraint,
 ];
 type CountConstraints = Record<Letter, { min: number; max: number }>;
 type Constraints = { count: CountConstraints; position: PositionConstraints };
 
 const letterCountsByAnswer = Object.fromEntries(
-  answerWords.map((word) => [word, countLetters(word.split("") as Letter[])])
+  answerWords.map(word => [word, countLetters(word.split('') as Letter[])])
 );
 
 export function getPotentialAnswers(guesseds: Guessed[]) {
   const constraints = initialConstraints();
-  guesseds.forEach((guessed) => narrowConstraints(constraints, guessed));
+  guesseds.forEach(guessed => narrowConstraints(constraints, guessed));
 
-  return answerWords.filter((word) =>
-    meetsConstraints(word.split("") as Letter[], constraints)
+  return answerWords.filter(word =>
+    meetsConstraints(word.split('') as Letter[], constraints)
   );
 }
 
 function narrowConstraints(constraints: Constraints, guessed: Guessed) {
   const { count, position } = constraints;
 
-  _.uniq(guessed.map((gl) => gl.letter)).forEach((letter) => {
+  _.uniq(guessed.map(gl => gl.letter)).forEach(letter => {
     const letterCountConstraint = count[letter];
     let greenish = 0;
     let grey = 0;
@@ -39,12 +39,12 @@ function narrowConstraints(constraints: Constraints, guessed: Guessed) {
       if (gl.letter !== letter) {
         return;
       }
-      if (gl.color === "green") {
+      if (gl.color === 'green') {
         greenish++;
         position[index].yes = letter;
         return;
       }
-      if (gl.color === "yellow") {
+      if (gl.color === 'yellow') {
         greenish++;
         position[index].no.add(letter);
         return;
@@ -65,7 +65,7 @@ function narrowConstraints(constraints: Constraints, guessed: Guessed) {
 
 function initialConstraints(): Constraints {
   const count = Object.fromEntries(
-    alphabet.map((letter) => [letter, { min: 0, max: 5 }])
+    alphabet.map(letter => [letter, { min: 0, max: 5 }])
   ) as CountConstraints;
 
   const placement = Array(5)
@@ -105,7 +105,7 @@ function meetsCountConstraints(
   answer: Letter[],
   constraints: CountConstraints
 ) {
-  const letterCounts = letterCountsByAnswer[answer.join("")];
+  const letterCounts = letterCountsByAnswer[answer.join('')];
   return Object.entries(letterCounts).every(([letter, count]) => {
     const constraint = constraints[letter as Letter];
     if (count < constraint.min || count > constraint.max) {

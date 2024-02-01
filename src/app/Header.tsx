@@ -1,12 +1,12 @@
-import { LetterCard } from "../grid/LetterCard";
+import { LetterCard } from '../grid/LetterCard';
 
 export function Header() {
   return (
-    <div className={"flex justify-center pb-6 h-1/10"}>
+    <div className={'h-1/10 flex justify-center pb-6'}>
       <div className="flex-col">
         <div className="flex">
           <div className="w-1/2" />
-          <p className="font-sans text-left text-xs font-bold text-red-900 w-1/2 ml-2">
+          <p className="ml-2 w-1/2 text-left font-sans text-xs font-bold text-red-900">
             wor
           </p>
         </div>
@@ -19,7 +19,7 @@ export function Header() {
           <LetterCard color="black" letter="E" />
         </div>
         <div className="flex">
-          <p className="w-1/2 text-xs text-right font-bold mr-2">sed</p>
+          <p className="mr-2 w-1/2 text-right text-xs font-bold">sed</p>
           <div className="w-1/2" />
         </div>
       </div>

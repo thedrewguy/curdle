@@ -1,7 +1,7 @@
-import { Letter } from "../data/letters";
-import { Guessed } from "../data/types";
-import { EntryRow } from "./EntryRow";
-import { GuessedRow } from "./GuessedRow";
+import { Letter } from '../data/letters';
+import { Guessed } from '../data/types';
+import { EntryRow } from './EntryRow';
+import { GuessedRow } from './GuessedRow';
 
 export function GameGrid(props: {
   guesseds: Guessed[];

@@ -1,7 +1,8 @@
-import { CardColor, cardColors } from "../data/types";
+import { twMerge } from 'tailwind-merge';
+import { CardColor, cardColors } from '../data/types';
 
 export function KeyboardButton(
-  props: React.ComponentProps<"button"> & {
+  props: React.ComponentProps<'button'> & {
     color: CardColor;
     className?: string;
   }
@@ -11,7 +12,10 @@ export function KeyboardButton(
   return (
     <button
       {...buttonProps}
-      className={`flex justify-center items-center flex-1 ${bg} ${text} text-center text-lg  border rounded-md min-w-5 min-h-5 p-1 active:bg-neutral-700 ${className}`}
+      className={twMerge(
+        `flex min-h-5 min-w-5 flex-1 items-center justify-center p-1 ${text} text-lg ${bg} rounded-md border active:bg-neutral-700`,
+        className
+      )}
     >
       {props.children}
     </button>

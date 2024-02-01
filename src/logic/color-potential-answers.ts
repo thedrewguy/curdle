@@ -1,22 +1,22 @@
-import { answerWords } from "../data/answer-words";
-import { Letter } from "../data/letters";
-import { LetterColor } from "../data/types";
-import { countLetters } from "./count-letters";
+import { answerWords } from '../data/answer-words';
+import { Letter } from '../data/letters';
+import { LetterColor } from '../data/types';
+import { countLetters } from './count-letters';
 
 const letterCountsByAnswer = Object.fromEntries(
-  answerWords.map((word) => [word, countLetters(word.split("") as Letter[])])
+  answerWords.map(word => [word, countLetters(word.split('') as Letter[])])
 );
 
 export function colorPotentialAnswers(answers: string[], guess: Letter[]) {
-  return answers.map((answer) =>
-    JSON.stringify(coloringForAnswer(guess, answer.split("") as Letter[]))
+  return answers.map(answer =>
+    JSON.stringify(coloringForAnswer(guess, answer.split('') as Letter[]))
   );
 }
 
 function coloringForAnswer(guess: Letter[], answer: Letter[]): LetterColor[] {
   const guessLetterCounts = {} as Partial<Record<Letter, number>>;
 
-  const coloringGreenOnly: ("green" | undefined)[] = answer.map(
+  const coloringGreenOnly: ('green' | undefined)[] = answer.map(
     (answerLetter, index) => {
       const guessLetter = guess[index];
       if (guessLetter !== answerLetter) {
@@ -26,7 +26,7 @@ function coloringForAnswer(guess: Letter[], answer: Letter[]): LetterColor[] {
       guessLetterCounts[guessLetter] =
         (guessLetterCounts[guessLetter] ?? 0) + 1;
 
-      return "green";
+      return 'green';
     }
   );
 
@@ -41,11 +41,11 @@ function coloringForAnswer(guess: Letter[], answer: Letter[]): LetterColor[] {
     guessLetterCounts[guessLetter] = guessLetterCount;
 
     if (
-      guessLetterCount <= letterCountsByAnswer[answer.join("")][guessLetter]
+      guessLetterCount <= letterCountsByAnswer[answer.join('')][guessLetter]
     ) {
-      return "yellow";
+      return 'yellow';
     }
-    return "grey";
+    return 'grey';
   });
 
   return coloring;
