@@ -1,4 +1,3 @@
-import { Stack, StackProps } from "@mui/material";
 import _ from "lodash";
 import { Letter, alphabet } from "../data/letters";
 import {
@@ -7,30 +6,32 @@ import {
   LetterColor,
   letterToCardColorMap,
 } from "../data/types";
-import { Row } from "../grid/Row";
 import { BackspaceKey } from "./BackspaceKey";
 import { EnterKey } from "./EnterKey";
 import { LetterKey } from "./LetterKey";
 
-export function Keyboard(
-  props: StackProps & {
-    guesseds: Guessed[];
-    handleKey: (key: string) => void;
-  }
-) {
-  const { guesseds, handleKey, ...stackProps } = props;
+export function Keyboard(props: {
+  guesseds: Guessed[];
+  handleKey: (key: string) => void;
+}) {
   const coloring = keyboardColoring(props.guesseds);
 
   return (
-    <Stack spacing={1} {...stackProps}>
-      <Row>{keysFromLetters("QWERTYUIOP", coloring, props.handleKey)}</Row>
-      <Row>{keysFromLetters("ASDFGHJKL", coloring, props.handleKey)}</Row>
-      <Row>
+    <div className="flex flex-col space-y-1 p-2 pb-4 w-full">
+      <div className="flex w-full space-x-1">
+        {keysFromLetters("QWERTYUIOP", coloring, props.handleKey)}
+      </div>
+      <div className="flex space-x-1 content-center">
+        <div className="flex-[0.5]" />
+        {keysFromLetters("ASDFGHJKL", coloring, props.handleKey)}
+        <div className="flex-[0.5]" />
+      </div>
+      <div className="flex space-x-1 content-center">
         <EnterKey onClick={() => props.handleKey("Enter")} />
         {keysFromLetters("ZXCVBNM", coloring, props.handleKey)}
         <BackspaceKey onClick={() => props.handleKey("Backspace")} />
-      </Row>
-    </Stack>
+      </div>
+    </div>
   );
 }
 

@@ -1,19 +1,19 @@
-import { Button, ButtonBaseProps } from "@mui/material";
-import { CardColor } from "../data/types";
+import { CardColor, cardColors } from "../data/types";
 
-export function KeyboardButton(props: ButtonBaseProps & { color: CardColor }) {
-  const { color, ...buttonProps } = props;
+export function KeyboardButton(
+  props: React.ComponentProps<"button"> & {
+    color: CardColor;
+    className?: string;
+  }
+) {
+  const { color, className, ...buttonProps } = props;
+  const { bg, text } = cardColors[color];
   return (
-    <Button
+    <button
       {...buttonProps}
-      variant="outlined"
-      sx={{
-        minWidth: 0,
-        padding: 0,
-        backgroundColor: props.color,
-      }}
+      className={`flex justify-center items-center flex-1 ${bg} ${text} text-center text-lg  border rounded-md min-w-5 min-h-5 p-1 active:bg-neutral-700 ${className}`}
     >
       {props.children}
-    </Button>
+    </button>
   );
 }

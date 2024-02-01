@@ -1,11 +1,10 @@
-import { ButtonBaseProps } from "@mui/material";
-import BackspaceIcon from "@mui/icons-material/Backspace";
+import { BackspaceOutlined } from "@mui/icons-material";
 import { KeyboardButton } from "./KeyboardButton";
 
-export function BackspaceKey(props: ButtonBaseProps) {
+export function BackspaceKey(props: React.ComponentProps<"button">) {
   return (
     <KeyboardButton {...props} color="lightgrey">
-      <BackspaceIcon sx={{ paddingX: ".25em", color: "black" }} />
+      <BackspaceOutlined fontSize={"small"} />
     </KeyboardButton>
   );
 }

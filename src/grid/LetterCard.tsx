@@ -1,29 +1,17 @@
-import { Card, Typography } from "@mui/material";
-import { CardColor, cardToTextColorMap } from "../data/types";
+import { CardColor, cardColors } from "../data/types";
 
 export function LetterCard(props: {
   letter?: string;
   color: CardColor;
   fontSize?: string;
-  fontColor?: string;
 }) {
+  let colors = cardColors[props.color];
+  let fontSize = props.fontSize ?? "text-3xl";
   return (
-    <Card
-      className="card"
-      variant="outlined"
-      sx={{
-        backgroundColor: props.color,
-      }}
+    <div
+      className={`flex justify-center items-center ${colors.bg} border rounded-md ${fontSize} w-[1.5em] h-[1.5em] ${colors.text} `}
     >
-      <Typography
-        color={props.fontColor ?? cardToTextColorMap[props.color]}
-        textAlign="center"
-        fontSize={props.fontSize ?? "1.75rem"}
-        width={"1.5em"}
-        height={"1.5em"}
-      >
-        {props.letter}
-      </Typography>
-    </Card>
+      {props.letter}
+    </div>
   );
 }

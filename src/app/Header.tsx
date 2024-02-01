@@ -1,44 +1,28 @@
-import { Box, BoxProps, Stack, Typography } from "@mui/material";
 import { LetterCard } from "../grid/LetterCard";
 
-export function Header(props: BoxProps) {
+export function Header() {
   return (
-    <Box {...props} display="flex" justifyContent="center">
-      <Box display="flex" flexDirection="column">
-        <Box display="flex">
-          <Box width="50%" />
-          <Typography
-            width="50%"
-            fontWeight="bold"
-            textAlign="center"
-            fontSize=".75rem"
-            marginLeft="8px"
-          >
+    <div className={"flex justify-center pb-6 h-1/10"}>
+      <div className="flex-col">
+        <div className="flex">
+          <div className="w-1/2" />
+          <p className="font-sans text-left text-xs font-bold text-red-900 w-1/2 ml-2">
             wor
-          </Typography>
-        </Box>
-        <Stack spacing={1} direction="row">
-          <LetterCard color="darkred" letter="C" />
+          </p>
+        </div>
+        <div className="flex space-x-1">
+          <LetterCard color="red" letter="C" />
           <LetterCard color="black" letter="U" />
-          <LetterCard color="darkred" letter="R" />
+          <LetterCard color="red" letter="R" />
           <LetterCard color="black" letter="D" />
-          <LetterCard color="darkred" letter="L" />
+          <LetterCard color="red" letter="L" />
           <LetterCard color="black" letter="E" />
-        </Stack>
-        <Box display="flex">
-          <Typography
-            width="50%"
-            color="darkred"
-            fontWeight="bold"
-            textAlign="center"
-            fontSize=".75rem"
-            marginRight="8px"
-          >
-            sed
-          </Typography>
-          <Box width="50%" />
-        </Box>
-      </Box>
-    </Box>
+        </div>
+        <div className="flex">
+          <p className="w-1/2 text-xs text-right font-bold mr-2">sed</p>
+          <div className="w-1/2" />
+        </div>
+      </div>
+    </div>
   );
 }

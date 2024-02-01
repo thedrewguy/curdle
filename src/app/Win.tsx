@@ -1,34 +1,24 @@
-import { ButtonBase, Card, Stack, StackProps, Typography } from "@mui/material";
 import { LetterCard } from "../grid/LetterCard";
 
-export function Win(
-  props: StackProps & { numGuesses: number; reset: () => void }
-) {
-  const { numGuesses, reset, ...stackProps } = props;
+export function Win(props: { numGuesses: number; reset: () => void }) {
   const guessesColor =
-    numGuesses < 5 ? "green" : numGuesses === 5 ? "goldenrod" : "grey";
+    props.numGuesses < 5 ? "green" : props.numGuesses === 5 ? "yellow" : "grey";
   return (
-    <Stack {...stackProps} alignItems="center" spacing={1}>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <Typography textAlign="center" fontSize="1.75rem">
-          You won in
-        </Typography>
+    <div className={`flex flex-col items-center space-y-1`}>
+      <div className="flex items-center space-x-1">
+        <p className="text-center text-2xl">You won in</p>
         <LetterCard
           color={guessesColor}
-          letter={`${numGuesses}`}
-          fontSize="1rem"
+          letter={`${props.numGuesses}`}
+          fontSize="text-base"
         />
-        <Typography textAlign="center" fontSize="1.75rem">
-          guesses
-        </Typography>
-      </Stack>
-      <ButtonBase onClick={props.reset}>
-        <Card sx={{ bgcolor: "green" }}>
-          <Typography margin="4px" color="white">
-            Play Again?
-          </Typography>
-        </Card>
-      </ButtonBase>
-    </Stack>
+        <p className="text-center text-2xl">guesses!</p>
+      </div>
+      <button onClick={props.reset}>
+        <div className="bg-green-700 rounded-md">
+          <p className="text-center text-white m-1">Play Again</p>
+        </div>
+      </button>
+    </div>
   );
 }

@@ -1,19 +1,13 @@
-import { ButtonBaseProps, Typography } from "@mui/material";
 import { KeyboardButton } from "./KeyboardButton";
 
-export function EnterKey(props: ButtonBaseProps) {
+export function EnterKey(props: React.ComponentProps<"button">) {
   return (
-    <KeyboardButton {...props} color="lightgrey">
-      <Typography
-        color="black"
-        textAlign="center"
-        fontSize="1rem"
-        minWidth="1em"
-        paddingX=".25em"
-        paddingY=".25em"
-      >
-        Enter
-      </Typography>
+    <KeyboardButton
+      {...props}
+      color="lightgrey"
+      className="text-sm flex-[1.5] min-w-14"
+    >
+      <p className="text-sm">ENTER</p>
     </KeyboardButton>
   );
 }
