@@ -1,8 +1,20 @@
+import { HelpOutline } from '@mui/icons-material';
+import { useState } from 'react';
 import { LetterCard } from '../grid/LetterCard';
+import { Info } from './Info';
 
 export function Header() {
+  const [dialogVisible, setDialogVisible] = useState(false);
+
   return (
-    <div className={'h-1/10 flex justify-center pb-6'}>
+    <div className={'h-1/10 flex justify-between pb-6'}>
+      <Info visible={dialogVisible} setVisible={setDialogVisible} />
+      <div
+        className="flex w-5 items-start justify-start py-1"
+        onClick={() => setDialogVisible(true)}
+      >
+        <HelpOutline className="text-red-900" sx={{ height: '15px' }} />
+      </div>
       <div className="flex-col">
         <div className="flex">
           <div className="w-1/2" />
@@ -23,6 +35,7 @@ export function Header() {
           <div className="w-1/2" />
         </div>
       </div>
+      <div className="w-5" />
     </div>
   );
 }
