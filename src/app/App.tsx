@@ -10,8 +10,8 @@ function App() {
   useKeyDownListener(handleKey);
 
   return (
-    <div className="flex h-screen justify-center ">
-      <div className="flex h-full w-full max-w-[430px] flex-col sm:h-[90vh]">
+    <div className="flex h-full justify-center">
+      <div className="h-game fixed flex w-full max-w-[430px] flex-col">
         <Header />
         <div className="flex h-full flex-col items-center justify-between">
           <GameGrid guesseds={guesseds} entry={entry} win={win} />
@@ -19,7 +19,6 @@ function App() {
           <Keyboard guesseds={guesseds} handleKey={handleKey} />
         </div>
       </div>
-      <dialog className="backdrop-grayscale-0 ">hi</dialog>
     </div>
   );
 }
