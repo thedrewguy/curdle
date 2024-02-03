@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div className="flex h-full justify-center">
-      <div className="h-game fixed flex w-full max-w-[430px] flex-col">
+      <div className="flex h-[100dvh] w-full max-w-[430px] flex-col sm:h-[90dvh]">
         <Header />
         <div className="flex h-full flex-col items-center justify-between">
           <GameGrid guesseds={guesseds} entry={entry} win={win} />
