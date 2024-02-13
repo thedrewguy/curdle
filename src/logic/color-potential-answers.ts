@@ -1,11 +1,6 @@
-import { answerWords } from '../data/answer-words';
 import { Letter } from '../data/letters';
 import { LetterColor } from '../data/types';
-import { countLetters } from './count-letters';
-
-const letterCountsByAnswer = Object.fromEntries(
-  answerWords.map(word => [word, countLetters(word.split('') as Letter[])])
-);
+import { letterCountsByGuess } from './count-letters';
 
 export function colorPotentialAnswers(answers: string[], guess: Letter[]) {
   return answers.map(answer =>
@@ -40,9 +35,7 @@ function coloringForAnswer(guess: Letter[], answer: Letter[]): LetterColor[] {
     let guessLetterCount = (guessLetterCounts[guessLetter] ?? 0) + 1;
     guessLetterCounts[guessLetter] = guessLetterCount;
 
-    if (
-      guessLetterCount <= letterCountsByAnswer[answer.join('')][guessLetter]
-    ) {
+    if (guessLetterCount <= letterCountsByGuess[answer.join('')][guessLetter]) {
       return 'yellow';
     }
     return 'grey';

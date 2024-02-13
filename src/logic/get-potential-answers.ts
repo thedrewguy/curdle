@@ -1,8 +1,7 @@
 import _ from 'lodash';
-import { answerWords } from '../data/answer-words';
 import { Letter, alphabet } from '../data/letters';
 import { Guessed } from '../data/types';
-import { countLetters } from './count-letters';
+import { letterCountsByGuess } from './count-letters';
 
 type PositionConstraint = { yes: Letter | undefined; no: Set<Letter> };
 type PositionConstraints = [
@@ -15,15 +14,11 @@ type PositionConstraints = [
 type CountConstraints = Record<Letter, { min: number; max: number }>;
 type Constraints = { count: CountConstraints; position: PositionConstraints };
 
-const letterCountsByAnswer = Object.fromEntries(
-  answerWords.map(word => [word, countLetters(word.split('') as Letter[])])
-);
-
-export function getPotentialAnswers(guesseds: Guessed[]) {
+export function getPotentialAnswers(guesseds: Guessed[], answerList: string[]) {
   const constraints = initialConstraints();
   guesseds.forEach(guessed => narrowConstraints(constraints, guessed));
 
-  return answerWords.filter(word =>
+  return answerList.filter(word =>
     meetsConstraints(word.split('') as Letter[], constraints)
   );
 }
@@ -105,7 +100,7 @@ function meetsCountConstraints(
   answer: Letter[],
   constraints: CountConstraints
 ) {
-  const letterCounts = letterCountsByAnswer[answer.join('')];
+  const letterCounts = letterCountsByGuess[answer.join('')];
   return Object.entries(letterCounts).every(([letter, count]) => {
     const constraint = constraints[letter as Letter];
     if (count < constraint.min || count > constraint.max) {

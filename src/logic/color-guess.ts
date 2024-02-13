@@ -4,8 +4,12 @@ import { chooseFromColorings } from './choose-from-colorings';
 import { colorPotentialAnswers } from './color-potential-answers';
 import { getPotentialAnswers } from './get-potential-answers';
 
-export function colorGuess(guess: Letter[], guesseds: Guessed[]): Guessed {
-  const potentialAnswers = getPotentialAnswers(guesseds);
+export function colorGuess(
+  guess: Letter[],
+  guesseds: Guessed[],
+  answerList: string[]
+): Guessed {
+  const potentialAnswers = getPotentialAnswers(guesseds, answerList);
   const answerColorings = colorPotentialAnswers(potentialAnswers, guess);
   const coloringString = chooseFromColorings(answerColorings);
 

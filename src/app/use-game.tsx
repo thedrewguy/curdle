@@ -3,10 +3,13 @@ import { Letter, alphabet } from '../data/letters';
 import { Guessed } from '../data/types';
 import { makesValidWord } from '../logic/makes-valid-word';
 import { colorGuess } from '../logic/color-guess';
+import { answerWords } from '../data/answer-words';
+import { guessWords } from '../data/guess-words';
 
 export function useGame() {
   const [entry, addLetter, removeLetter, clearEntry] = useEntry();
   const [guesseds, addGuessed, clearGuesseds] = useGuesseds();
+  const { hardMode, toggleHardMode } = useHardMode();
 
   const lastGuess =
     guesseds.length > 0 ? guesseds[guesseds.length - 1] : undefined;
@@ -27,7 +30,11 @@ export function useGame() {
           removeLetter();
         }
         if (key === 'Enter' && makesValidWord(entry)) {
-          const guessed = colorGuess(entry, guesseds);
+          const guessed = colorGuess(
+            entry,
+            guesseds,
+            hardMode ? guessWords : answerWords
+          );
           addGuessed(guessed);
           clearEntry();
         }
@@ -39,6 +46,8 @@ export function useGame() {
     clearGuesseds,
     win,
     handleKey,
+    hardMode,
+    toggleHardMode,
   };
 }
 
@@ -80,4 +89,12 @@ function useEntry() {
     typeof removeLetter,
     typeof clearEntry,
   ];
+}
+
+function useHardMode() {
+  const [hardMode, setHardMode] = useState(false);
+  function toggleHardMode() {
+    setHardMode(!hardMode);
+  }
+  return { hardMode, toggleHardMode };
 }
