@@ -1,5 +1,5 @@
 import { HelpOutline } from '@mui/icons-material';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { LetterCard } from '../grid/LetterCard';
 import { Info } from './Info';
 import { twMerge } from 'tailwind-merge';
@@ -7,6 +7,8 @@ import { twMerge } from 'tailwind-merge';
 type HeaderProps = {
   hardMode: boolean;
   toggleHardMode: () => void;
+  undo: () => void;
+  redo: () => void;
   gameInProgress: boolean;
 };
 
@@ -22,12 +24,12 @@ export function Header(props: HeaderProps) {
         setVisible={setDialogVisible}
         hardMode={props.hardMode}
       />
-      <div
+      <button
         className="flex w-5 items-start justify-start py-1"
-        onClick={() => setDialogVisible(true)}
+        onClick={clickHandler(() => setDialogVisible(true))}
       >
         <HelpOutline className="text-red-900" sx={{ height: '15px' }} />
-      </div>
+      </button>
       <div className="flex-col">
         <div className="flex">
           <div className="h-4 w-1/2" />
@@ -37,8 +39,12 @@ export function Header(props: HeaderProps) {
         </div>
         <div className="flex space-x-1">
           <FirstLetterCard {...props} />
-          <LetterCard color="black" letter="U" />
-          <LetterCard color="red" letter="R" />
+          <button onClick={clickHandler(props.undo)}>
+            <LetterCard color="black" letter="U" />
+          </button>
+          <button onClick={clickHandler(props.redo)}>
+            <LetterCard color="red" letter="R" />
+          </button>
           <LetterCard color="black" letter="D" />
           <LetterCard color="red" letter="L" />
           <LetterCard color="black" letter="E" />
@@ -65,7 +71,7 @@ function FirstLetterCard(props: HeaderProps) {
   if (props.gameInProgress) {
     return card;
   }
-  return <button onClick={props.toggleHardMode}>{card}</button>;
+  return <button onClick={clickHandler(props.toggleHardMode)}>{card}</button>;
 }
 
 function marginText(hardMode: boolean) {
@@ -78,5 +84,12 @@ function marginText(hardMode: boolean) {
   return {
     topRight: { text: ' ' },
     bottomLeft: { text: 'ard mode', alignment: 'text-left' },
+  };
+}
+
+function clickHandler(fn: () => void) {
+  return (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.currentTarget.blur();
+    fn();
   };
 }

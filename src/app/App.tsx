@@ -12,6 +12,8 @@ function App() {
     win,
     hardMode,
     toggleHardMode,
+    undo,
+    redo,
     clearGuesseds,
     handleKey,
   } = useGame();
@@ -25,6 +27,8 @@ function App() {
           hardMode={hardMode}
           toggleHardMode={toggleHardMode}
           gameInProgress={guesseds.length > 0}
+          undo={undo}
+          redo={redo}
         />
         <div className="flex h-full flex-col items-center justify-between">
           <GameGrid guesseds={guesseds} entry={entry} win={win} />
