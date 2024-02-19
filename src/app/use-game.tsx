@@ -5,9 +5,13 @@ import _ from 'lodash';
 
 export function useGame() {
   const [entry, addLetter, removeLetter, clearEntry] = useEntry();
-  const { guesseds, addGuessed, undo, redo, clearGuesseds } = useGuesseds();
-  const { hardMode, toggleHardMode } = useHardMode();
-
+  const { guesseds, addGuessed, undo, redo, clearGuesseds, clearUndid } =
+    useGuesseds();
+  const [hardMode, setHardMode] = useState(false);
+  function toggleHardMode() {
+    clearUndid();
+    setHardMode(!hardMode);
+  }
   const lastGuess =
     guesseds.length > 0 ? guesseds[guesseds.length - 1] : undefined;
   const win = !!lastGuess?.every(gl => gl.color === 'green');
@@ -33,6 +37,10 @@ export type Game = ReturnType<typeof useGame>;
 function useGuesseds() {
   const [guesseds, setGuesseds] = useState<Guessed[]>([]);
   const [undid, setUndid] = useState<Guessed[]>([]);
+
+  function clearUndid() {
+    setUndid([]);
+  }
 
   function addGuessed(guessed: Guessed) {
     setGuesseds([...guesseds, guessed]);
@@ -65,7 +73,7 @@ function useGuesseds() {
     setGuesseds([]);
   }
 
-  return { guesseds, addGuessed, undo, redo, clearGuesseds };
+  return { guesseds, addGuessed, undo, redo, clearGuesseds, clearUndid };
 }
 
 function useEntry() {
@@ -88,12 +96,4 @@ function useEntry() {
     typeof removeLetter,
     typeof clearEntry,
   ];
-}
-
-function useHardMode() {
-  const [hardMode, setHardMode] = useState(false);
-  function toggleHardMode() {
-    setHardMode(!hardMode);
-  }
-  return { hardMode, toggleHardMode };
 }

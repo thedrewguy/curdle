@@ -4,8 +4,7 @@ import { Game } from './use-game';
 export function Win(props: { game: Game }) {
   const { game } = props;
   const numGuesses = game.guesseds.length;
-  const guessesColor =
-    numGuesses < 5 ? 'green' : numGuesses === 5 ? 'yellow' : 'grey';
+  const guessesColor = getWinTileColor(numGuesses, game.hardMode);
   return (
     <div className={`flex flex-col items-center space-y-1`}>
       <div className="flex items-center space-x-1">
@@ -24,4 +23,23 @@ export function Win(props: { game: Game }) {
       </button>
     </div>
   );
+}
+
+function getWinTileColor(numGuesses: number, hardMode: boolean) {
+  if (hardMode) {
+    if (numGuesses === 5) {
+      return 'green';
+    }
+    if (numGuesses === 6) {
+      return 'yellow';
+    }
+    return 'grey';
+  }
+  if (numGuesses === 4) {
+    return 'green';
+  }
+  if (numGuesses === 5) {
+    return 'yellow';
+  }
+  return 'grey';
 }
