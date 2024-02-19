@@ -1,14 +1,9 @@
-import { Letter } from '../data/letters';
-import { Guessed } from '../data/types';
+import { Game } from '../app/use-game';
 import { EntryRow } from './EntryRow';
 import { GuessedRow } from './GuessedRow';
 
-export function GameGrid(props: {
-  guesseds: Guessed[];
-  entry: Letter[];
-  win: boolean;
-}) {
-  const { guesseds, entry, win } = props;
+export function GameGrid(props: { game: Game }) {
+  const { guesseds, entry, win } = props.game;
   const numSkeletons = 6 - guesseds.length - (win ? 0 : 1);
 
   return (

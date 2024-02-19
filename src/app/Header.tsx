@@ -3,26 +3,25 @@ import React, { useState } from 'react';
 import { LetterCard } from '../grid/LetterCard';
 import { Info } from './Info';
 import { twMerge } from 'tailwind-merge';
+import { Game } from './use-game';
 
 type HeaderProps = {
-  hardMode: boolean;
-  toggleHardMode: () => void;
-  undo: () => void;
-  redo: () => void;
-  gameInProgress: boolean;
+  game: Game;
 };
 
 export function Header(props: HeaderProps) {
+  const { game } = props;
+
   const [dialogVisible, setDialogVisible] = useState(false);
 
-  const { topRight, bottomLeft } = marginText(props.hardMode);
+  const { topRight, bottomLeft } = marginText(game.hardMode);
 
   return (
     <div className={'h-1/10 flex justify-between pb-6'}>
       <Info
         visible={dialogVisible}
         setVisible={setDialogVisible}
-        hardMode={props.hardMode}
+        hardMode={game.hardMode}
       />
       <button
         className="flex w-5 items-start justify-start py-1"
@@ -38,11 +37,11 @@ export function Header(props: HeaderProps) {
           </p>
         </div>
         <div className="flex space-x-1">
-          <FirstLetterCard {...props} />
-          <button onClick={clickHandler(props.undo)}>
+          <FirstLetterCard {...game} />
+          <button onClick={clickHandler(game.undo)}>
             <LetterCard color="black" letter="U" />
           </button>
-          <button onClick={clickHandler(props.redo)}>
+          <button onClick={clickHandler(game.redo)}>
             <LetterCard color="red" letter="R" />
           </button>
           <LetterCard color="black" letter="D" />
@@ -66,12 +65,13 @@ export function Header(props: HeaderProps) {
   );
 }
 
-function FirstLetterCard(props: HeaderProps) {
-  const card = <LetterCard color="red" letter={props.hardMode ? 'H' : 'C'} />;
-  if (props.gameInProgress) {
+function FirstLetterCard(game: Game) {
+  const gameInProgress = game.guesseds.length > 0;
+  const card = <LetterCard color="red" letter={game.hardMode ? 'H' : 'C'} />;
+  if (gameInProgress) {
     return card;
   }
-  return <button onClick={clickHandler(props.toggleHardMode)}>{card}</button>;
+  return <button onClick={clickHandler(game.toggleHardMode)}>{card}</button>;
 }
 
 function marginText(hardMode: boolean) {
